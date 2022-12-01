@@ -8,7 +8,7 @@
 * I will use canvas because I want the players to be mobile
 
 Wireframe in folder
-![Wireframe](/Wireframe.png)
+![Wireframe](Wireframe.png)
 
 
 # MVP Goals
