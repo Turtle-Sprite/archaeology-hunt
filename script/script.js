@@ -9,35 +9,60 @@ let topRight= document.querySelector('#top-right')
 let leftBumper= document.querySelector('#left-bumper')
 let rightBumper= document.querySelector('#right-bumper')
 let canvas= document.querySelector('canvas')
-console.log(canvas)
+let main = document.querySelector('main')
+// console.log(canvas)
 let bottom = document.querySelector('#bottom')
-console.log(bottom)
+// console.log(bottom)
 let startBtn = document.querySelector('#start')
 let resetBtn = document.querySelector('#reset')
+
+//===setting the canvas
+//setting width & height inside main container
+// canvas.width = main.width
+// canvas.height = main.height
+
+//determines the height and width of the canvas/main div 
+// currently, because of the box grid, set to 285Height 120width
+let mainHeight= main.clientHeight
+let mainWidth = main.clientWidth
+canvas.setAttribute('height', getComputedStyle(canvas)['height'])
+canvas.setAttribute('width', getComputedStyle(canvas)['width'])
+console.log (mainHeight, " ", mainWidth)
 
 // telling the computer we're rendering context 2D images?
 const ctx = canvas.getContext('2d')
 console.log(ctx)
+
 
 //=====Drawing Class====//
 //creating the players/game pieces
 class Drawing {
 
     //if I wanted to count lives, I think I'd do it here
-    constructor (x, y, width, height, color) {
+    constructor (x, y, width, height, color, radius) {
         this.x = x
         this.y = y
         this.width = width
         this.height = height
         this.color = color
+        this.radius = radius
     }
     //when calling this class, we'll input the above variables, then render will draw it using Rect
     renderRect () {
         ctx.fillStyle = this.color
         ctx.fillRect(this.x, this.y, this.width, this.height)
-    }        
+    } 
+    
+    renderCircle () {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, false);
+        ctx.strokeStlye = "blue"
+        ctx.stroke()
+    }
 }
 
+const artifactDraw = new Drawing(100, 100, 0, 0, "lime", 30)
+artifactDraw.renderCircle()
 // ===== Draw Character====//
 //creates the "archaeologist character"
 const archChar = new Drawing(285,120, 15, 15, 'orange')
@@ -54,9 +79,10 @@ artifactOne.renderRect()
 
 ///=====pick up artifact/make renders disappear=====//
 
-function pickUpArtifact () {
-    
-}
+addEventListener("keydown", 
+    function pickUpArtifact () {
+
+})
 
 //====== Handling movement ======///
 //creating an empty object for pressedKeys so we can call them in the function below
@@ -87,6 +113,7 @@ function handleMovement () {
     archChar.renderRect()
     roomOne.renderRect()
     artifactOne.renderRect()
+    artifactDraw.renderCircle()
 }
 
 //===== Event Listeners for key press ======//
@@ -137,3 +164,5 @@ setInterval (
             countdown--
         }, 500)
 
+//=====set timeout for reminding players of volcano
+//can set timer within timeout to make text change sizes when there's 10 seconds left
