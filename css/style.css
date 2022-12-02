@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+}
+#container {
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: blueviolet;
+    height: 100vh;
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: .25fr 2fr 2fr .25fr;
+    grid-template-rows: 1fr 4fr 1fr;
+    grid-template-areas: 
+                        "left-bumper top-left top-right right-bumper"
+                        "left-bumper canvas canvas right-bumper"
+                        "bottom bottom bottom bottom";
+}
+#top-left, #top-right, #left-bumper, #right-bumper, #bottom, canvas {
+    border: 3px solid black;
+}
+main {
+    grid-area: canvas;
+}
+canvas {
+    /* grid-area: canvas; */
+    width: 99.5%;
+    height: 99%;
+
+}
+#top-left {
+    grid-area: top-left;
+}
+#top-right {
+    grid-area: top-right;
+}
+#left-bumper{
+    grid-area: left-bumper;
+}
+#right-bumper{
+    grid-area: right-bumper;
+}
+#bottom {
+    grid-area: bottom;
+}
