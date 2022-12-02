@@ -40,9 +40,23 @@ class Drawing {
 
 // ===== Draw Character====//
 //creates the "archaeologist character"
-const archChar = new Drawing(50,50, 25, 25, 'orange')
+const archChar = new Drawing(285,120, 15, 15, 'orange')
 //calls the character to be drawn
 archChar.renderRect()
+
+
+//----Draw a Game room and contain all elements in an array, object or function?
+const roomOne = new Drawing(200, 110, 100, 5, 'blue')
+roomOne.renderRect()
+
+const artifactOne = new Drawing(200, 145, 5, 5, 'grey')
+artifactOne.renderRect()
+
+///=====pick up artifact/make renders disappear=====//
+
+function pickUpArtifact () {
+    
+}
 
 //====== Handling movement ======///
 //creating an empty object for pressedKeys so we can call them in the function below
@@ -71,6 +85,8 @@ function handleMovement () {
         archChar.x += speed
     }
     archChar.renderRect()
+    roomOne.renderRect()
+    artifactOne.renderRect()
 }
 
 //===== Event Listeners for key press ======//
@@ -99,27 +115,6 @@ setInterval (
         
     }, 120000) //2 minutes 2 * 60 *1000
 
-
-    //======count up to 2 minutes=====//
-//every second update clock
-// call with start button
-//clear when Game Timer runs out or player hits a death trap
-//could also use this as GameTimer and use else to log out player win/lose scenario
-// let time = 0
-// let volacanoClock = setInterval (
-//     function timer () {
-//         if (time < 10) {
-//             volcanoTimer.innerText = `0:0${time}`
-//         } else if (time < 60) {
-//             volcanoTimer.innerText = `0:${time}`
-//         } else if (time >= 60 && time < 70) {
-//             volcanoTimer.innerText = `1:0${time - 60}`
-//         } else if (time >= 70 && time <= 120){
-//                 volcanoTimer.innerText = `1:${time - 60}`
-//         }
-//         time++
-//     }, 500)
-
     //=====countdown from 2 minutes
     let countdown = 120
     let volacanoClockDown = setInterval (
@@ -141,5 +136,4 @@ setInterval (
             }
             countdown--
         }, 500)
-
 
