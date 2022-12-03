@@ -23,11 +23,11 @@ let resetBtn = document.querySelector('#reset')
 
 //determines the height and width of the canvas/main div 
 // currently, because of the box grid, set to 285Height 120width
-let mainHeight= main.clientHeight
-let mainWidth = main.clientWidth
+// let mainHeight= main.clientHeight
+// let mainWidth = main.clientWidth
 canvas.setAttribute('height', getComputedStyle(canvas)['height'])
 canvas.setAttribute('width', getComputedStyle(canvas)['width'])
-console.log (mainHeight, " ", mainWidth)
+// console.log (mainHeight, " ", mainWidth)
 
 // telling the computer we're rendering context 2D images?
 const ctx = canvas.getContext('2d')
@@ -71,11 +71,53 @@ archChar.renderRect()
 
 
 //----Draw a Game room and contain all elements in an array, object or function?
-const roomOne = new Drawing(200, 110, 100, 5, 'blue')
-roomOne.renderRect()
+//drawing walls
+const roomOneTop = new Drawing(900, 330, 100, 10, "blue", 0);
+roomOneTop.renderRect();
 
-const artifactOne = new Drawing(200, 145, 5, 5, 'grey')
-artifactOne.renderRect()
+const roomOneLeft = new Drawing(830, 400, 10, 100, "blue")
+roomOneLeft.renderRect()
+
+const hallOneRight = new Drawing(900, 340, 10, 90, "blue")
+hallOneRight.renderRect()
+
+const hallTwoTop = new Drawing (830, 330, 80, 10, "blue")
+hallTwoTop.renderRect()
+
+///Room 2
+const roomTwoTop = new Drawing(500, 310, 330, 30, "blue")
+roomTwoTop.renderRect()
+
+const roomTwoLeftWall = new Drawing (410, 350, 10, 180, "blue")
+roomTwoLeftWall.renderRect()
+
+//room 3
+const roomThreeTop = new Drawing (150, 350, 260, 10, "blue")
+roomThreeTop.renderRect()
+
+const roomThreeLavaOne = new Drawing(0, 290, 70, 210, "red")
+roomThreeLavaOne.renderRect()
+
+//room 4
+const roomFourBottLava = new Drawing(0, 100, 200, 190, "red")
+roomFourBottLava.renderRect()
+
+const roomFourRightLava = new Drawing(260, 000, 50, 240, "red")
+roomFourRightLava.renderRect()
+
+//room 5
+const roomFiveLeftWall = new Drawing(330, 0, 10, 200, "blue")
+roomFiveLeftWall.renderRect()
+
+const roomFiveLavaLeft = new Drawing(340, 150, 200, 50, "red")
+roomFiveLavaLeft.renderRect()
+
+//room 5 moving pieces
+const FireBallOne = new Drawing(700, 20, 0, 0, "lime", 15)
+FireBallOne.renderCircle()
+
+const FireBallTwo = new Drawing(800, 280, 0, 0, "lime", 15)
+FireBallTwo.renderCircle()
 
 ///=====pick up artifact/make renders disappear=====//
 
