@@ -25,9 +25,12 @@ let resetBtn = document.querySelector('#reset')
 // currently, because of the box grid, set to 285Height 120width
 // let mainHeight= main.clientHeight
 // let mainWidth = main.clientWidth
-canvas.setAttribute('height', getComputedStyle(canvas)['height'])
-canvas.setAttribute('width', getComputedStyle(canvas)['width'])
+// canvas.setAttribute('height', getComputedStyle(canvas)['height'])
+// canvas.setAttribute('width', getComputedStyle(canvas)['width'])
 // console.log (mainHeight, " ", mainWidth)
+canvas.width = 1000;
+canvas.height = 500;
+
 
 // telling the computer we're rendering context 2D images?
 const ctx = canvas.getContext('2d')
@@ -56,6 +59,8 @@ class Drawing {
     renderCircle () {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, false);
+        ctx.fillStyle = this.color;
+        ctx.fill();
         ctx.strokeStlye = "blue"
         ctx.stroke()
     }
@@ -65,7 +70,7 @@ const artifactDraw = new Drawing(100, 100, 0, 0, "lime", 30)
 artifactDraw.renderCircle()
 // ===== Draw Character====//
 //creates the "archaeologist character"
-const archChar = new Drawing(285,120, 15, 15, 'orange')
+const archChar = new Drawing(980, 470, 20, 20, "orange", 20)
 //calls the character to be drawn
 archChar.renderRect()
 
@@ -75,7 +80,7 @@ archChar.renderRect()
 const roomOneTop = new Drawing(900, 330, 100, 10, "blue", 0);
 roomOneTop.renderRect();
 
-const roomOneLeft = new Drawing(830, 400, 10, 100, "blue")
+const roomOneLeft = new Drawing(800, 400, 10, 100, "blue")
 roomOneLeft.renderRect()
 
 const hallOneRight = new Drawing(900, 340, 10, 90, "blue")
@@ -119,6 +124,22 @@ FireBallOne.renderCircle()
 const FireBallTwo = new Drawing(800, 280, 0, 0, "lime", 15)
 FireBallTwo.renderCircle()
 
+//=====list of all rendered objects in room ===//
+        roomOneTop.renderRect();
+        roomOneLeft.renderRect()
+        hallOneRight.renderRect()
+        hallTwoTop.renderRect()
+        roomTwoTop.renderRect()
+        roomTwoLeftWall.renderRect()
+        roomThreeTop.renderRect()
+        roomThreeLavaOne.renderRect()
+        roomFourBottLava.renderRect()
+        roomFourRightLava.renderRect()
+        roomFiveLeftWall.renderRect()
+        roomFiveLavaLeft.renderRect()
+        FireBallOne.renderCircle()
+        FireBallTwo.renderCircle()
+
 ///=====pick up artifact/make renders disappear=====//
 
 addEventListener("keydown", 
@@ -152,10 +173,7 @@ function handleMovement () {
     if (pressedKeys.d) {
         archChar.x += speed
     }
-    archChar.renderRect()
-    roomOne.renderRect()
-    artifactOne.renderRect()
-    artifactDraw.renderCircle()
+    
 }
 
 //===== Event Listeners for key press ======//
@@ -176,6 +194,21 @@ setInterval(
     function gameLoop () {
         ctx.clearRect(0,0, canvas.width, canvas.height)
         handleMovement()
+        archChar.renderRect()
+        roomOneTop.renderRect();
+        roomOneLeft.renderRect()
+        hallOneRight.renderRect()
+        hallTwoTop.renderRect()
+        roomTwoTop.renderRect()
+        roomTwoLeftWall.renderRect()
+        roomThreeTop.renderRect()
+        roomThreeLavaOne.renderRect()
+        roomFourBottLava.renderRect()
+        roomFourRightLava.renderRect()
+        roomFiveLeftWall.renderRect()
+        roomFiveLavaLeft.renderRect()
+        FireBallOne.renderCircle()
+        FireBallTwo.renderCircle()
     }, 60)
 
 //Game timer - 2 minutes to complete level, check for win scenario
