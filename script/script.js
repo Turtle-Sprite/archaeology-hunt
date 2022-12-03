@@ -125,20 +125,23 @@ const FireBallTwo = new Drawing(800, 280, 0, 0, "lime", 15)
 FireBallTwo.renderCircle()
 
 //=====list of all rendered objects in room ===//
-        roomOneTop.renderRect();
-        roomOneLeft.renderRect()
-        hallOneRight.renderRect()
-        hallTwoTop.renderRect()
-        roomTwoTop.renderRect()
-        roomTwoLeftWall.renderRect()
-        roomThreeTop.renderRect()
-        roomThreeLavaOne.renderRect()
-        roomFourBottLava.renderRect()
-        roomFourRightLava.renderRect()
-        roomFiveLeftWall.renderRect()
-        roomFiveLavaLeft.renderRect()
-        FireBallOne.renderCircle()
-        FireBallTwo.renderCircle()
+function drawRoom () {
+    roomOneTop.renderRect();
+    roomOneLeft.renderRect()
+    hallOneRight.renderRect()
+    hallTwoTop.renderRect()
+    roomTwoTop.renderRect()
+    roomTwoLeftWall.renderRect()
+    roomThreeTop.renderRect()
+    roomThreeLavaOne.renderRect()
+    roomFourBottLava.renderRect()
+    roomFourRightLava.renderRect()
+    roomFiveLeftWall.renderRect()
+    roomFiveLavaLeft.renderRect()
+    // FireBallOne.renderCircle()
+    FireBallTwo.renderCircle()
+}
+
 
 ///=====pick up artifact/make renders disappear=====//
 
@@ -173,8 +176,35 @@ function handleMovement () {
     if (pressedKeys.d) {
         archChar.x += speed
     }
-    
+    archChar.renderRect()
 }
+
+let xFireball = 700;
+let yFireball = 20;
+let yDirection = 5
+let radiusFireball = 15; 
+function animateFireBallOne () {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const FireBallOne = new Drawing(xFireball, yFireball, 0, 0, "lime", radiusFireball);
+    FireBallOne.renderCircle();
+
+    // xTwo = xTwo + 5;
+    yFireball = yFireball + yDirection;
+    handleMovement()
+    drawRoom()
+    if(yFireball > (310 - radiusFireball)) {
+        yDirection = -1 * yDirection 
+    } else if (yFireball < radiusFireball) {
+        yDirection = -1 *yDirection
+    }
+
+    requestAnimationFrame(animateFireBallOne);
+}
+animateFireBallOne();
+
+
+
 
 //===== Event Listeners for key press ======//
 //if a key is pressed, pressedKeys *empty object* updates e *with the key pressed *.  e.key
