@@ -127,7 +127,6 @@ const FireBallTwo = new Drawing(800, 280, 0, 0, "lime", 15)
 
 //=====list of all rendered objects in room ===//
 function drawRect(rectangle) {
-    console.log(' draw Rectfired')
     rectangle.renderRect();
   }
   
@@ -147,7 +146,6 @@ function drawRect(rectangle) {
   ];
   
 function drawRoom (drawRectangle) {
-        console.log('draw room fired')
         for (i = 0; i < drawRectangle.length; i++) {
             drawRect(drawRectangle[i]);
         } 
@@ -159,19 +157,26 @@ drawRoom(drawRectangle)
     // console.log(drawRectangle)
   console.log(roomFiveLavaLeft.x, roomFiveLavaLeft.y, roomFiveLavaLeft.width, roomFiveLavaLeft.height);
 
-//   function clearRectangle (rectangle) {
-//     ctx.clearRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-//   }
+
+
+  //=====Clearing Rectangles=====//
+  function clearRectangle (rectangle) {
+    ctx.clearRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+  }
 //   clearRectangle(roomFiveLavaLeft)
 
 
 
 
-///=====pick up artifact/make renders disappear=====//
 
-// addEventListener("keydown", 
-    function pickUpArtifact () {
-        roomOneLeft.clearRect(0, 0, canvas.width, canvas.height)
+///=====pick up artifact/make renders disappear=====//
+//need to set detection function for artifacts first
+//if statement will say if spacebar && detect an artifact/rectangleABCD or E, clear rectangle based on character position
+addEventListener("keyup", 
+    function pickUpArtifact (e) {
+        if(e.key == "Space") {
+
+        }
 }
 
 
