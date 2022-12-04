@@ -78,77 +78,102 @@ archChar.renderRect()
 //----Draw a Game room and contain all elements in an array, object or function?
 //drawing walls
 const roomOneTop = new Drawing(900, 330, 100, 10, "blue", 0);
-roomOneTop.renderRect();
+// roomOneTop.renderRect();
 
 const roomOneLeft = new Drawing(800, 400, 10, 100, "blue")
-roomOneLeft.renderRect()
+// roomOneLeft.renderRect()
+
 
 const hallOneRight = new Drawing(900, 340, 10, 90, "blue")
-hallOneRight.renderRect()
+// hallOneRight.renderRect()
 
 const hallTwoTop = new Drawing (830, 330, 80, 10, "blue")
-hallTwoTop.renderRect()
+// hallTwoTop.renderRect()
 
 ///Room 2
 const roomTwoTop = new Drawing(500, 310, 330, 30, "blue")
-roomTwoTop.renderRect()
+// roomTwoTop.renderRect()
 
 const roomTwoLeftWall = new Drawing (410, 350, 10, 180, "blue")
-roomTwoLeftWall.renderRect()
+// roomTwoLeftWall.renderRect()
 
 //room 3
 const roomThreeTop = new Drawing (150, 350, 260, 10, "blue")
-roomThreeTop.renderRect()
+// roomThreeTop.renderRect()
 
 const roomThreeLavaOne = new Drawing(0, 290, 70, 210, "red")
-roomThreeLavaOne.renderRect()
+// roomThreeLavaOne.renderRect()
 
 //room 4
 const roomFourBottLava = new Drawing(0, 100, 200, 190, "red")
-roomFourBottLava.renderRect()
+// roomFourBottLava.renderRect()
 
 const roomFourRightLava = new Drawing(260, 000, 50, 240, "red")
-roomFourRightLava.renderRect()
+// roomFourRightLava.renderRect()
 
 //room 5
 const roomFiveLeftWall = new Drawing(330, 0, 10, 200, "blue")
-roomFiveLeftWall.renderRect()
+// roomFiveLeftWall.renderRect()
 
 const roomFiveLavaLeft = new Drawing(340, 150, 200, 50, "red")
-roomFiveLavaLeft.renderRect()
+// roomFiveLavaLeft.renderRect()
 
 //room 5 moving pieces
 const FireBallOne = new Drawing(700, 20, 0, 0, "lime", 15)
-FireBallOne.renderCircle()
+// FireBallOne.renderCircle()
 
 const FireBallTwo = new Drawing(800, 280, 0, 0, "lime", 15)
-FireBallTwo.renderCircle()
+// FireBallTwo.renderCircle()
 
 //=====list of all rendered objects in room ===//
-function drawRoom () {
-    roomOneTop.renderRect();
-    roomOneLeft.renderRect()
-    hallOneRight.renderRect()
-    hallTwoTop.renderRect()
-    roomTwoTop.renderRect()
-    roomTwoLeftWall.renderRect()
-    roomThreeTop.renderRect()
-    roomThreeLavaOne.renderRect()
-    roomFourBottLava.renderRect()
-    roomFourRightLava.renderRect()
-    roomFiveLeftWall.renderRect()
-    roomFiveLavaLeft.renderRect()
-    // FireBallOne.renderCircle()
-    FireBallTwo.renderCircle()
-}
+function drawRect(rectangle) {
+    console.log(' draw Rectfired')
+    rectangle.renderRect();
+  }
+  
+  const drawRectangle = [
+    roomOneTop,
+    roomOneLeft,
+    hallOneRight,
+    hallTwoTop,
+    roomTwoTop,
+    roomTwoLeftWall,
+    roomThreeTop,
+    roomThreeLavaOne,
+    roomFourBottLava,
+    roomFourRightLava,
+    roomFiveLeftWall,
+    roomFiveLavaLeft
+  ];
+  
+function drawRoom (drawRectangle) {
+        console.log('draw room fired')
+        for (i = 0; i < drawRectangle.length; i++) {
+            drawRect(drawRectangle[i]);
+        } 
+    }
+
+drawRoom(drawRectangle)
+    
+    // console.log(drawRoom)
+    // console.log(drawRectangle)
+  console.log(roomFiveLavaLeft.x, roomFiveLavaLeft.y, roomFiveLavaLeft.width, roomFiveLavaLeft.height);
+
+//   function clearRectangle (rectangle) {
+//     ctx.clearRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+//   }
+//   clearRectangle(roomFiveLavaLeft)
+
+
 
 
 ///=====pick up artifact/make renders disappear=====//
 
-addEventListener("keydown", 
+// addEventListener("keydown", 
     function pickUpArtifact () {
+        roomOneLeft.clearRect(0, 0, canvas.width, canvas.height)
+}
 
-})
 
 //====== Handling movement ======///
 //creating an empty object for pressedKeys so we can call them in the function below
@@ -192,7 +217,7 @@ function animateFireBallOne () {
     // xTwo = xTwo + 5;
     yFireball = yFireball + yDirection;
     handleMovement()
-    drawRoom()
+    drawRoom(drawRectangle)
     if(yFireball > (310 - radiusFireball)) {
         yDirection = -1 * yDirection 
     } else if (yFireball < radiusFireball) {
@@ -225,20 +250,20 @@ setInterval(
         ctx.clearRect(0,0, canvas.width, canvas.height)
         handleMovement()
         archChar.renderRect()
-        roomOneTop.renderRect();
-        roomOneLeft.renderRect()
-        hallOneRight.renderRect()
-        hallTwoTop.renderRect()
-        roomTwoTop.renderRect()
-        roomTwoLeftWall.renderRect()
-        roomThreeTop.renderRect()
-        roomThreeLavaOne.renderRect()
-        roomFourBottLava.renderRect()
-        roomFourRightLava.renderRect()
-        roomFiveLeftWall.renderRect()
-        roomFiveLavaLeft.renderRect()
-        FireBallOne.renderCircle()
-        FireBallTwo.renderCircle()
+        // roomOneTop.renderRect();
+        // roomOneLeft.renderRect()
+        // hallOneRight.renderRect()
+        // hallTwoTop.renderRect()
+        // roomTwoTop.renderRect()
+        // roomTwoLeftWall.renderRect()
+        // roomThreeTop.renderRect()
+        // roomThreeLavaOne.renderRect()
+        // roomFourBottLava.renderRect()
+        // roomFourRightLava.renderRect()
+        // roomFiveLeftWall.renderRect()
+        // roomFiveLavaLeft.renderRect()
+        // FireBallOne.renderCircle()
+        // FireBallTwo.renderCircle()
     }, 60)
 
 //Game timer - 2 minutes to complete level, check for win scenario
