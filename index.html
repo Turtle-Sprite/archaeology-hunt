@@ -10,6 +10,7 @@
 </head>
 <body>
     <div id="container">
+        <div id="topBar"></div>
         <aside id="top-left"><h2 id="artifacts-counter">Artifacts 0/5</h2></aside>
         <aside id="top-right"><h2 id="volcano-timer">Timer</h2></aside>
         <aside id="left-bumper"><div></div></aside>
@@ -17,8 +18,8 @@
         <main>
             <div id="startPage">
                 <h1 id="Welcome">Welcome to Archaeology Hunt</h1>
-                <h2>You have 2 minutes to collect all artifacts and exit the chamber before the volcano explodes.</h2>
-                <p>Press Spacebar to pick up Artifacts</p>
+                <h2 id="gameRules">You have 2 minutes to collect all artifacts and exit the chamber before the volcano explodes.</h2>
+                <p id="gameInstructions">Press Spacebar to pick up Artifacts</p>
                 <button id="start">Start</button>
             </div>
             <canvas id="canvas">Play game</canvas>
@@ -26,6 +27,7 @@
         <aside id="bottom"><h2 id="player-message">Welcome to the game</h2></aside>
         
         <button id="reset">Reset</button>
+        <button id="exit">Exit Game</button>
     </div>
 </body>
 </html>

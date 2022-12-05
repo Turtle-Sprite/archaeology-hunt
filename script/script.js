@@ -13,52 +13,82 @@ let main = document.querySelector('main')
 let bottom = document.querySelector('#bottom')
 let startBtn = document.querySelector('#start')
 let resetBtn = document.querySelector('#reset')
-let startPage = document.querySelector('startPage')
-let welcome = document.querySelector('Welcome')
+let startPage = document.querySelector('#startPage')
+let welcome = document.querySelector('#Welcome')
+let gameRules = document.querySelector('#gameRules')
+let exitBtn = document.querySelector("#exit");
+let topBar = document.getElementById("topBar");
+let gameInstructions = document.querySelector("#gameInstructions");
 
 ///==== Functions for hiding and revealing HTML Elements ===///
 
-function startPage () {
-    welcome.style.visibility = 'hidden'
-    canvas.style.visibility = 'hidden'
-    topLeft.style.visibility = 'hidden'
-    artifactCounter.style.visibilty = 'hidden'
-    playerMessage.style.display = 'none'
-    resetBtn.style.display = 'none'
-    startPage.style.display = 'inline-block'
+
+function startPageFunc () {
+    //hide these elements
+    topLeft.style.display = "none";
+    canvas.style.display = "none";
+    resetBtn.style.display = "none";
+    topRight.style.display = "none";
+    exitBtn.style.display = "none"
+
+    //display only these
+    startPage.style.display = "block"
 }
-startPage ()
+startPageFunc ()
 
 function playPage () {
+    //display these elements
+    topLeft.style.display = "block";
+    topRight.style.display = "block";
+    canvas.style.display = "block";
+    exitBtn.style.display = "block"
+    resetBtn.style.display = "block";
 
-}
-playPage ()
-
-function losePage () {
+    //hide all elements in start page
+    startPage.style.display = "none"
     
 }
 
-function winPage () {
+function losePage () {
+    //display these & change innerText 
+    startPage.style.display = "block"
+    welcome.innerText = "You lose!"
+    gameRules.style.innerText = "The volcano exploded and you did not make it to safety. Press start to play again. "
 
+    //hide these: 
+    gameInstructions.style.display = "none"
+    topLeft.style.display = "none";
+    canvas.style.display = "none";
+    resetBtn.style.display = "none";
+    topRight.style.display = "none";
+    exitBtn.style.display = "none"   
+}
+
+function winPage () {
+    startPage.style.display = "block"
+    welcome.innerText = "You Win!"
+    gameRules.style.innerText = "You made it to safety with all of the artifacts. Press start to play again. "
+
+    //hide these: 
+    gameInstructions.style.display = "none"
+    topLeft.style.display = "none";
+    canvas.style.display = "none";
+    resetBtn.style.display = "none";
+    topRight.style.display = "none";
+    exitBtn.style.display = "none"   
 }
 
 //===setting the canvas
 //setting width & height inside main container
-// canvas.width = main.width
-// canvas.height = main.height
-
-//determines the height and width of the canvas/main div 
-// currently, because of the box grid, set to 285Height 120width
-// let mainHeight= main.clientHeight
-// let mainWidth = main.clientWidth
-// canvas.setAttribute('height', getComputedStyle(canvas)['height'])
-// canvas.setAttribute('width', getComputedStyle(canvas)['width'])
-// console.log (mainHeight, " ", mainWidth)
 canvas.width = 1000;
 canvas.height = 500;
 
-// startBtn.addEventListener("click", 
-// function playGame () {
+
+///======The start button is clicked. Game begins ====////
+startBtn.addEventListener("click", 
+function playGame () {
+    //hide the start screen/ call teh play page
+    playPage ()
 
 // telling the computer we're rendering context 2D images?
 const ctx = canvas.getContext('2d')
@@ -372,4 +402,12 @@ function checkForWin () {
 
     }
 }
-// }) //playGame function on startBtn event listener
+}) //playGame function on startBtn event listener
+
+
+//===== RESET BUTTON ====//
+resetBtn.addEventListener('click', 
+    function reset () {
+        playPage() 
+        ///probably need timers to restart and character to redraw at beginning
+    })

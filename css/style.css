@@ -1,51 +1,68 @@
-*{
+* {
     margin: 0;
-    background-color: grey;
-}
-#container {
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    height: 100vh;
-    width: 100%;
+    text-align: center;
+  }
+  
+  #container {
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+    background-color: blueviolet;
+  
     margin: 0 auto;
-    display: flex;
-    flex-flow: row wrap;
-    /* display: grid; */
-    /* grid-template-columns: .15fr 2fr 2fr .15fr;
-    grid-template-rows: 1fr 5fr 1fr; */
-    /* grid-template-areas: 
-                        "left-bumper top-left top-right right-bumper"
-                        "left-bumper canvas canvas right-bumper"
-                        "bottom bottom bottom bottom"; */
-}
-#top-left, #top-right, #left-bumper, #right-bumper, #bottom, canvas {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-columns: 0.15fr 1fr 1fr 1fr 1fr 0.15fr;
+    grid-template-rows: 0.5fr 0.5fr 3fr 0.75fr;
+    grid-template-areas:
+      "topBar topBar topBar topBar topBar topBar"
+      "left-bumper top-left top-left top-right top-right right-bumper"
+      "left-bumper canvas canvas canvas canvas right-bumper"
+      "bottom bottom bottom bottom bottom bottom";
+  }
+  #top-left,
+  #top-right,
+  #left-bumper,
+  #right-bumper,
+  #bottom,
+  canvas, #topBar {
     border: 3px solid black;
-}
-main {
-    /* grid-area: canvas; */
-}
-canvas {
-    /* grid-area: canvas; */
-    width: 100%;
-    height: 100%;
-
-}
-#startPage {
-    background-color: bisque;
-
-}
-#top-left {
-    /* grid-area: top-left; */
-
-}
-#top-right {
-    /* grid-area: top-right; */
-}
-#left-bumper{
-    /* grid-area: left-bumper; */
-}
-#right-bumper{
-    /* grid-area: right-bumper; */
-}
-#bottom {
-    /* grid-area: bottom; */
-}
+  }
+  main {
+      grid-area: canvas;
+    }
+    canvas {
+        /* grid-area: canvas; */
+        width: 1000;
+        height: 600;
+        background-color: grey;
+    }
+ #topBar {
+      grid-area: topBar;
+    }
+ #top-left {
+    grid-area: top-left;
+  }
+  #top-right {
+    grid-area: top-right;
+  }
+  #left-bumper {
+    grid-area: left-bumper;
+  }
+  #right-bumper {
+    grid-area: right-bumper;
+  }
+  #bottom {
+    grid-area: bottom;
+  }
+  #startPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+  }
+  #Welcome {
+    
+  }
+  #gameRules {
+  }
