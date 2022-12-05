@@ -4,17 +4,43 @@ let artifactCounter = document.querySelector('#artifacts-counter')
 let playerMessage = document.querySelector('#player-message')
 
 //Vars for hiding start/game/reset elements
-let topLeft = document.querySelector('#top-left')
+let topLeft = document.getElementById('top-left')
 let topRight= document.querySelector('#top-right')
 let leftBumper= document.querySelector('#left-bumper')
 let rightBumper= document.querySelector('#right-bumper')
 let canvas= document.querySelector('canvas')
 let main = document.querySelector('main')
-// console.log(canvas)
 let bottom = document.querySelector('#bottom')
-// console.log(bottom)
 let startBtn = document.querySelector('#start')
 let resetBtn = document.querySelector('#reset')
+let startPage = document.querySelector('startPage')
+let welcome = document.querySelector('Welcome')
+
+///==== Functions for hiding and revealing HTML Elements ===///
+
+function startPage () {
+    welcome.style.visibility = 'hidden'
+    canvas.style.visibility = 'hidden'
+    topLeft.style.visibility = 'hidden'
+    artifactCounter.style.visibilty = 'hidden'
+    playerMessage.style.display = 'none'
+    resetBtn.style.display = 'none'
+    startPage.style.display = 'inline-block'
+}
+startPage ()
+
+function playPage () {
+
+}
+playPage ()
+
+function losePage () {
+    
+}
+
+function winPage () {
+
+}
 
 //===setting the canvas
 //setting width & height inside main container
@@ -31,6 +57,8 @@ let resetBtn = document.querySelector('#reset')
 canvas.width = 1000;
 canvas.height = 500;
 
+// startBtn.addEventListener("click", 
+// function playGame () {
 
 // telling the computer we're rendering context 2D images?
 const ctx = canvas.getContext('2d')
@@ -66,8 +94,7 @@ class Drawing {
     }
 }
 
-const artifactDraw = new Drawing(100, 100, 0, 0, "lime", 30)
-artifactDraw.renderCircle()
+
 // ===== Draw Character====//
 //creates the "archaeologist character"
 const archChar = new Drawing(980, 470, 20, 20, "orange", 20)
@@ -76,54 +103,43 @@ archChar.renderRect()
 
 
 //----Draw a Game room and contain all elements in an array, object or function?
-//drawing walls
+//Room 1
 const roomOneTop = new Drawing(900, 330, 100, 10, "blue", 0);
-// roomOneTop.renderRect();
-
 const roomOneLeft = new Drawing(800, 400, 10, 100, "blue")
-// roomOneLeft.renderRect()
-
-
 const hallOneRight = new Drawing(900, 340, 10, 90, "blue")
-// hallOneRight.renderRect()
-
 const hallTwoTop = new Drawing (830, 330, 80, 10, "blue")
-// hallTwoTop.renderRect()
-
 ///Room 2
 const roomTwoTop = new Drawing(500, 310, 330, 30, "blue")
-// roomTwoTop.renderRect()
-
 const roomTwoLeftWall = new Drawing (410, 350, 10, 180, "blue")
-// roomTwoLeftWall.renderRect()
-
 //room 3
 const roomThreeTop = new Drawing (150, 350, 260, 10, "blue")
-// roomThreeTop.renderRect()
-
 const roomThreeLavaOne = new Drawing(0, 290, 70, 210, "red")
-// roomThreeLavaOne.renderRect()
-
 //room 4
 const roomFourBottLava = new Drawing(0, 100, 200, 190, "red")
-// roomFourBottLava.renderRect()
-
 const roomFourRightLava = new Drawing(260, 000, 50, 240, "red")
-// roomFourRightLava.renderRect()
-
 //room 5
 const roomFiveLeftWall = new Drawing(330, 0, 10, 200, "blue")
-// roomFiveLeftWall.renderRect()
-
 const roomFiveLavaLeft = new Drawing(340, 150, 200, 50, "red")
-// roomFiveLavaLeft.renderRect()
 
 //room 5 moving pieces
 const FireBallOne = new Drawing(700, 20, 0, 0, "lime", 15)
-// FireBallOne.renderCircle()
-
 const FireBallTwo = new Drawing(800, 280, 0, 0, "lime", 15)
-// FireBallTwo.renderCircle()
+
+//======Drawing Images ======///
+const artifact = new Image();
+let imgX = 800
+let imgY = 450
+
+function init() {
+  artifact.src =
+    "https://img.freepik.com/free-vector/ancient-egypt-religion-culture-history-papyrus-with-main-gods-images-scarab-beetle-amulet-museum-exhibit-illustration_1284-64978.jpg?w=1380&t=st=1670207915~exp=1670208515~hmac=9ab1772ecda74a242f99dfd6d445dab74256906e3edca618f8776e6767a53f6b";
+  window.requestAnimationFrame(draw);
+}
+
+function draw() {
+  ctx.drawImage(artifact, imgX, imgY, 100, 100);
+}
+
 
 //=====list of all rendered objects in room ===//
 function drawRect(rectangle) {
@@ -183,10 +199,6 @@ let speed = 5
 function detectHit (drawRectangle) {
     // console.log('detect hit fired')
     for(let i = 0; i < drawRectangle.length; i++) {
-        // console.log(' for loop ', archChar.x, archChar.y, drawRectangle[i].x, drawRectangle[i].y )
-        
-        
-        
         //canvas innerheight and width collision detection
         //off left of window)
         if(archChar.x < 0)  {
@@ -217,10 +229,22 @@ function detectHit (drawRectangle) {
 ///=====pick up artifact/make renders disappear=====//
 //need to set detection function for artifacts first
 //if statement will say if spacebar && detect an artifact/rectangleABCD or E, clear rectangle based on character position
+let artifactTally = 0
 addEventListener("keyup", 
     function pickUpArtifact (e) {
         if(e.key == "Space" || e.key == " ") {
+            //call hit detection for specific coordinates
 
+            //if those coordinates are true
+            if(true) {
+                //clear the rectangle corresponding to those coordinates
+                ctx.clearRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+
+                //add an artifact tally
+                artifactTally ++
+            }
+            artifactCounter.innerText = `Artifact (${artifactTally} /)`
+            checkForWin ()
         }
 })
 
@@ -280,6 +304,7 @@ function animateFireBallOne () {
     }
 
     requestAnimationFrame(animateFireBallOne);
+    init();
 }
 animateFireBallOne();
 
@@ -311,6 +336,7 @@ document.addEventListener('keyup', e => pressedKeys[e.key] = false)
 //Game timer - 2 minutes to complete level, check for win scenario
 setInterval (
     function timer () {
+
         
     }, 120000) //2 minutes 2 * 60 *1000
 
@@ -338,3 +364,12 @@ setInterval (
 
 //=====set timeout for reminding players of volcano
 //can set timer within timeout to make text change sizes when there's 10 seconds left
+
+
+///====Check for Win Scenario ===//
+function checkForWin () {
+    if (artifactTally === 5) {
+
+    }
+}
+// }) //playGame function on startBtn event listener

@@ -1,25 +1,27 @@
 *{
     margin: 0;
+    background-color: grey;
 }
 #container {
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    background-color: blueviolet;
     height: 100vh;
     width: 100%;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: .15fr 2fr 2fr .15fr;
-    grid-template-rows: 1fr 5fr 1fr;
-    grid-template-areas: 
+    display: flex;
+    flex-flow: row wrap;
+    /* display: grid; */
+    /* grid-template-columns: .15fr 2fr 2fr .15fr;
+    grid-template-rows: 1fr 5fr 1fr; */
+    /* grid-template-areas: 
                         "left-bumper top-left top-right right-bumper"
                         "left-bumper canvas canvas right-bumper"
-                        "bottom bottom bottom bottom";
+                        "bottom bottom bottom bottom"; */
 }
 #top-left, #top-right, #left-bumper, #right-bumper, #bottom, canvas {
     border: 3px solid black;
 }
 main {
-    grid-area: canvas;
+    /* grid-area: canvas; */
 }
 canvas {
     /* grid-area: canvas; */
@@ -27,18 +29,23 @@ canvas {
     height: 100%;
 
 }
+#startPage {
+    background-color: bisque;
+
+}
 #top-left {
-    grid-area: top-left;
+    /* grid-area: top-left; */
+
 }
 #top-right {
-    grid-area: top-right;
+    /* grid-area: top-right; */
 }
 #left-bumper{
-    grid-area: left-bumper;
+    /* grid-area: left-bumper; */
 }
 #right-bumper{
-    grid-area: right-bumper;
+    /* grid-area: right-bumper; */
 }
 #bottom {
-    grid-area: bottom;
+    /* grid-area: bottom; */
 }
