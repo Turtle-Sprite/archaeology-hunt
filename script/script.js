@@ -144,6 +144,7 @@ function drawRect(rectangle) {
     roomFiveLeftWall,
     roomFiveLavaLeft
   ];
+  console.log(drawRectangle)
   
 function drawRoom (drawRectangle) {
         for (i = 0; i < drawRectangle.length; i++) {
@@ -155,7 +156,7 @@ drawRoom(drawRectangle)
     
     // console.log(drawRoom)
     // console.log(drawRectangle)
-  console.log(roomFiveLavaLeft.x, roomFiveLavaLeft.y, roomFiveLavaLeft.width, roomFiveLavaLeft.height);
+//   console.log(roomFiveLavaLeft.x, roomFiveLavaLeft.y, roomFiveLavaLeft.width, roomFiveLavaLeft.height);
 
 
 
@@ -166,7 +167,51 @@ drawRoom(drawRectangle)
 //   clearRectangle(roomFiveLavaLeft)
 
 
+///-===hit detection
 
+//get distance using pythagorean theorum, good for circles
+// function getCircleDistance(archCharx, archChary, wallx, wally) {
+//     let xDistance = wallx - archCharx;
+//     let yDistance = wally - archChary;
+//     let tDistance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+//     console.log(tDistance, ' get distance')
+//     return tDistance
+// }
+
+let speed = 5
+///Rectangle collision detection
+function detectHit (drawRectangle) {
+    // console.log('detect hit fired')
+    for(let i = 0; i < drawRectangle.length; i++) {
+        // console.log(' for loop ', archChar.x, archChar.y, drawRectangle[i].x, drawRectangle[i].y )
+        
+        
+        
+        //canvas innerheight and width collision detection
+        //off left of window)
+        if(archChar.x < 0)  {
+            archChar.x = archChar.x + speed
+        }
+        if(archChar.x > ctx.width)  {
+            archChar.x = archChar.x - speed
+        }
+        if(archChar.y < 0)  {
+            archChar.y = archChar.y + speed
+        }
+        if(archChar.y > ctx.height)  {
+            archChar.y = archChar.y - speed
+        }
+
+        //x-axis  with another x-axis value collision
+        //y-axis collision with another y axis value
+        if(archChar.x + archChar.width >= drawRectangle.x
+            && archChar.x <= drawRectangle.x + drawRectangle.width
+            && archChar.y + archChar.height >= drawRectangle.y 
+            && archChar.y <= drawRectangle.y + drawRectangle.height)
+        console.log('direct hit')
+    }
+}
+// detectHit(drawRectangle)
 
 
 ///=====pick up artifact/make renders disappear=====//
@@ -174,10 +219,10 @@ drawRoom(drawRectangle)
 //if statement will say if spacebar && detect an artifact/rectangleABCD or E, clear rectangle based on character position
 addEventListener("keyup", 
     function pickUpArtifact (e) {
-        if(e.key == "Space") {
+        if(e.key == "Space" || e.key == " ") {
 
         }
-}
+})
 
 
 //====== Handling movement ======///
@@ -186,11 +231,14 @@ const pressedKeys = {}
 // console.log(pressedKeys)
 //creating movement for archaeologist function
     //needs e-event for knowing which key was pressed
-function handleMovement () {
+function handleMovement (speed) {
     // console.log('handle movement', )
     // console.log(archChar)
-    const speed = 5
     //move down
+    detectHit(drawRectangle)
+    // if ( detectHit(drawRectangle) == false) {
+    //     speed = -1
+    // }
     if (pressedKeys.w) {
         archChar.y -= speed
     }
@@ -207,6 +255,8 @@ function handleMovement () {
         archChar.x += speed
     }
     archChar.renderRect()
+    // detectHit(drawRectangle)
+    
 }
 
 let xFireball = 700;
@@ -221,7 +271,7 @@ function animateFireBallOne () {
 
     // xTwo = xTwo + 5;
     yFireball = yFireball + yDirection;
-    handleMovement()
+    handleMovement(5)
     drawRoom(drawRectangle)
     if(yFireball > (310 - radiusFireball)) {
         yDirection = -1 * yDirection 
@@ -250,26 +300,13 @@ document.addEventListener('keyup', e => pressedKeys[e.key] = false)
 //game will loop every 60 miliseconds until we clear the interval (later)
 //with no clearRect, we get a snake movement with a trail of where object has been
 //invoke handleMovement to make sure we can use the function repeatedly
-setInterval( 
-    function gameLoop () {
-        ctx.clearRect(0,0, canvas.width, canvas.height)
-        handleMovement()
-        archChar.renderRect()
-        // roomOneTop.renderRect();
-        // roomOneLeft.renderRect()
-        // hallOneRight.renderRect()
-        // hallTwoTop.renderRect()
-        // roomTwoTop.renderRect()
-        // roomTwoLeftWall.renderRect()
-        // roomThreeTop.renderRect()
-        // roomThreeLavaOne.renderRect()
-        // roomFourBottLava.renderRect()
-        // roomFourRightLava.renderRect()
-        // roomFiveLeftWall.renderRect()
-        // roomFiveLavaLeft.renderRect()
-        // FireBallOne.renderCircle()
-        // FireBallTwo.renderCircle()
-    }, 60)
+// setInterval( 
+//     function gameLoop () {
+//         ctx.clearRect(0,0, canvas.width, canvas.height)
+//         handleMovement(5)
+//         archChar.renderRect()
+        
+//     }, 60)
 
 //Game timer - 2 minutes to complete level, check for win scenario
 setInterval (
@@ -281,8 +318,8 @@ setInterval (
     let countdown = 120
     let volacanoClockDown = setInterval (
         function timer () {
-            console.log('countdown ', countdown)
-            console.log(archChar.x, archChar.y)
+            // console.log('countdown ', countdown)
+            // console.log(archChar.x, archChar.y)
             if (countdown === 120) {
                 volcanoTimer.innerText = `2:00`
             } else if (countdown < 120 && countdown>= 70) {
