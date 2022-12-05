@@ -53,7 +53,7 @@ function losePage () {
     //display these & change innerText 
     startPage.style.display = "block"
     welcome.innerText = "You lose!"
-    gameRules.style.innerText = "The volcano exploded and you did not make it to safety. Press start to play again. "
+    gameRules.innerText = "The volcano exploded and you did not make it to safety. Press start to play again. "
 
     //hide these: 
     gameInstructions.style.display = "none"
@@ -156,18 +156,31 @@ const FireBallOne = new Drawing(700, 20, 0, 0, "lime", 15)
 const FireBallTwo = new Drawing(800, 280, 0, 0, "lime", 15)
 
 //======Drawing Images ======///
-const artifact = new Image();
-let imgX = 800
-let imgY = 450
+const scroll = new Image();
+const tablet = new Image();
+const mummy = new Image ();
+const keyTreasure = new Image ();
+const treasure = new Image ();
+const artifactArray = [
+    scroll, tablet, mummy, keyTreasure, treasure
+];
 
 function init() {
-  artifact.src =
+    scroll.src =
     "https://img.freepik.com/free-vector/ancient-egypt-religion-culture-history-papyrus-with-main-gods-images-scarab-beetle-amulet-museum-exhibit-illustration_1284-64978.jpg?w=1380&t=st=1670207915~exp=1670208515~hmac=9ab1772ecda74a242f99dfd6d445dab74256906e3edca618f8776e6767a53f6b";
-  window.requestAnimationFrame(draw);
+    tablet.src = "https://img.freepik.com/free-vector/egypt-flat-colorful-illustration_1284-19714.jpg?w=826&t=st=1670281279~exp=1670281879~hmac=a4b93334411677ee93af06ff5bc8e8629053194dbfde6f8db9ed0d6bd9db62ad"
+    mummy.src = "https://img.freepik.com/free-vector/mummy-creation-cartoon-vector-illustration-stages-mummification-process-embalming-dead-body-wrapping-it-with-cloth-placing-egyptian-sarcophagus-traditions-ancient-egypt-cult-dead_107791-4230.jpg?w=740&t=st=1670281561~exp=1670282161~hmac=493907bfc8d8cc794c31165358798bee80895732c2891784c5ede18cbeaf037e"
+    treasure.src = "https://img.freepik.com/free-vector/egyptian-composition-with-characters-ancient-god-creatures-box-full-valuable-items-vector-illustration_1284-66068.jpg?w=826&t=st=1670281964~exp=1670282564~hmac=ff184c6711a948bae3deb9f1332bebf939bc45a166bf6587c83b38b89a495af2"
+    keyTreasure.src = "https://cdn-icons-png.flaticon.com/512/1048/1048522.png?w=826&t=st=1670282468~exp=1670283068~hmac=f76942f36d771c8ec7ecb6b29608abf8d917ab10c097fc2a619f00ba0dc98f7e"
+    window.requestAnimationFrame(draw);
 }
 
 function draw() {
-  ctx.drawImage(artifact, imgX, imgY, 100, 100);
+    ctx.drawImage(scroll, 360, 450, 50, 50);
+    ctx.drawImage(tablet, 750, 450, 50, 50)
+    ctx.drawImage(mummy, 0, 0, 50, 50)
+    ctx.drawImage(treasure, 950, 250, 50, 50)
+    ctx.drawImage(keyTreasure, 340, 0, 50, 50)
 }
 
 
@@ -225,34 +238,28 @@ drawRoom(drawRectangle)
 // }
 
 let speed = 5
-///Rectangle collision detection
-function detectHit (drawRectangle) {
-    // console.log('detect hit fired')
-    for(let i = 0; i < drawRectangle.length; i++) {
-        //canvas innerheight and width collision detection
-        //off left of window)
-        if(archChar.x < 0)  {
-            archChar.x = archChar.x + speed
-        }
-        if(archChar.x > ctx.width)  {
-            archChar.x = archChar.x - speed
-        }
-        if(archChar.y < 0)  {
-            archChar.y = archChar.y + speed
-        }
-        if(archChar.y > ctx.height)  {
-            archChar.y = archChar.y - speed
-        }
-
-        //x-axis  with another x-axis value collision
-        //y-axis collision with another y axis value
-        if(archChar.x + archChar.width >= drawRectangle.x
-            && archChar.x <= drawRectangle.x + drawRectangle.width
-            && archChar.y + archChar.height >= drawRectangle.y 
-            && archChar.y <= drawRectangle.y + drawRectangle.height)
-        console.log('direct hit')
+/// ==== Rectangle collision detection ===== /////
+//call this function in the gameloop
+function detectHit(wall) {
+    console.log("detect hit fired");
+    // console.log(wall.length)
+    for (let i = 0; i < wall.length; i++) {
+      let wallX = wall[i].x;
+      let wally = wall[i].y;
+      let wallWidth = wall[i].width;
+      let wallHeight = wall[i].height;
+      // console.log(wallX, wally, wallWidth, wallHeight)
+      if (
+        archChar.x < wallX + wallWidth &&
+        archChar.x + archChar.width > wallX &&
+        archChar.y < wally + wallHeight &&
+        archChar.y + archChar.width > wally
+      ) {
+        console.log("collision");
+        return true;
+      }
     }
-}
+  }
 // detectHit(drawRectangle)
 
 
@@ -317,7 +324,7 @@ let xFireball = 700;
 let yFireball = 20;
 let yDirection = 5
 let radiusFireball = 15; 
-function animateFireBallOne () {
+function animate () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const FireBallOne = new Drawing(xFireball, yFireball, 0, 0, "lime", radiusFireball);
@@ -327,16 +334,19 @@ function animateFireBallOne () {
     yFireball = yFireball + yDirection;
     handleMovement(5)
     drawRoom(drawRectangle)
+    if(detectHit(drawRectangle)) {
+        handleMovement(-5)
+    }
     if(yFireball > (310 - radiusFireball)) {
         yDirection = -1 * yDirection 
     } else if (yFireball < radiusFireball) {
         yDirection = -1 *yDirection
     }
 
-    requestAnimationFrame(animateFireBallOne);
+    requestAnimationFrame(animate);
     init();
 }
-animateFireBallOne();
+animate();
 
 
 
@@ -388,6 +398,7 @@ setInterval (
                     volcanoTimer.innerText = `0:0${countdown}`
             } else {
                 clearInterval(volacanoClockDown)
+                losePage ()
             }
             countdown--
         }, 500)
@@ -410,4 +421,10 @@ resetBtn.addEventListener('click',
     function reset () {
         playPage() 
         ///probably need timers to restart and character to redraw at beginning
+    })
+
+    //==== Exit Button ====//
+exitBtn.addEventListener ('click', 
+    function exitGame () {
+        startPageFunc()
     })
