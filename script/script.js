@@ -162,7 +162,41 @@ const mummy = new Image ();
 const keyTreasure = new Image ();
 const treasure = new Image ();
 const artifactArray = [
-    scroll, tablet, mummy, keyTreasure, treasure
+     {
+        img: scroll,
+        x: 360,
+        y: 450,
+        height: 50,
+        width: 50
+    }, 
+   {
+        img: tablet,
+        x: 750,
+        y: 450,
+        height: 50,
+        width: 50
+    },
+    {
+        img: mummy,
+        x: 0,
+        y: 0,
+        height: 50,
+        width: 50 
+    },    
+    {
+        img: treasure,
+        x: 950,
+        y: 250,
+        height: 50,
+        width: 50
+    },
+    {
+        img: keyTreasure,
+        x: 340,
+        y: 0,
+        height: 50,
+        width: 50
+    }   
 ];
 
 function init() {
@@ -296,10 +330,6 @@ function handleMovement (speed) {
     // console.log('handle movement', )
     // console.log(archChar)
     //move down
-    detectHit(drawRectangle)
-    // if ( detectHit(drawRectangle) == false) {
-    //     speed = -1
-    // }
     if (pressedKeys.w) {
         archChar.y -= speed
     }
@@ -336,6 +366,11 @@ function animate () {
     drawRoom(drawRectangle)
     if(detectHit(drawRectangle)) {
         handleMovement(-5)
+    }
+    if(detectHit(artifactArray)){
+        clearRectangle (artifactArray)
+        console.log('artifact found')
+        console.log('artifact array', artifactArray )
     }
     if(yFireball > (310 - radiusFireball)) {
         yDirection = -1 * yDirection 
