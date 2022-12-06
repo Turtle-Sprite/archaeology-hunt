@@ -1,24 +1,24 @@
 //Vars for updating innerText
 let volcanoTimer = document.querySelector('#volcano-timer')
-let artifactCounter = document.querySelector('#artifacts-counter')
-let playerMessage = document.querySelector('#player-message')
+    let artifactCounter = document.querySelector('#artifacts-counter')
+    let playerMessage = document.querySelector('#player-message')
 
 //Vars for hiding start/game/reset elements
 let topLeft = document.getElementById('top-left')
-let topRight= document.querySelector('#top-right')
-let leftBumper= document.querySelector('#left-bumper')
-let rightBumper= document.querySelector('#right-bumper')
-let canvas= document.querySelector('canvas')
-let main = document.querySelector('main')
-let bottom = document.querySelector('#bottom')
-let startBtn = document.querySelector('#start')
-let resetBtn = document.querySelector('#reset')
-let startPage = document.querySelector('#startPage')
-let welcome = document.querySelector('#Welcome')
-let gameRules = document.querySelector('#gameRules')
-let exitBtn = document.querySelector("#exit");
-let topBar = document.getElementById("topBar");
-let gameInstructions = document.querySelector("#gameInstructions");
+    let topRight= document.querySelector('#top-right')
+    let leftBumper= document.querySelector('#left-bumper')
+    let rightBumper= document.querySelector('#right-bumper')
+    let canvas= document.querySelector('canvas')
+    let main = document.querySelector('main')
+    let bottom = document.querySelector('#bottom')
+    let startBtn = document.querySelector('#start')
+    let resetBtn = document.querySelector('#reset')
+    let startPage = document.querySelector('#startPage')
+    let welcome = document.querySelector('#Welcome')
+    let gameRules = document.querySelector('#gameRules')
+    let exitBtn = document.querySelector("#exit");
+    let topBar = document.getElementById("topBar");
+    let gameInstructions = document.querySelector("#gameInstructions");
 
 ///==== Functions for hiding and revealing HTML Elements ===///
 
@@ -87,7 +87,7 @@ canvas.height = 500;
 ///======The start button is clicked. Game begins ====////
 startBtn.addEventListener("click", 
 function playGame () {
-    //hide the start screen/ call teh play page
+    //hide the start screen/ call the play page
     playPage ()
 
 // telling the computer we're rendering context 2D images?
@@ -265,9 +265,9 @@ drawRoom(drawRectangle)
 
 
   //=====Clearing Rectangles=====//
-  function clearRectangle (rectangle) {
-    ctx.clearRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-  }
+//   function clearRectangle (rectangle) {
+//     ctx.clearRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+//   }
 //   clearRectangle(roomFiveLavaLeft)
 
 
@@ -286,7 +286,7 @@ let speed = 5
 /// ==== Rectangle collision detection ===== /////
 //call this function in the gameloop
 function detectHit(wall) {
-    console.log("detect hit fired");
+    // console.log("detect hit fired");
     // console.log(wall.length)
     for (let i = 0; i < wall.length; i++) {
       let wallX = wall[i].x;
@@ -300,20 +300,21 @@ function detectHit(wall) {
         archChar.y < wally + wallHeight &&
         archChar.y + archChar.width > wally
       ) {
-        console.log("collision");
+        // console.log("collision");
         return true;
       }
     }
   }
 // detectHit(drawRectangle)
 
+//detects a single collision, returns true
 function detectHitTwo(artifact) {
-    console.log("detect Two hit fired");
-    console.log(artifact)
-    console.log(archChar.x < artifact.x + artifact.width)
-    console.log(archChar.x + archChar.width > artifact.x)
-    console.log(archChar.y < artifact.y + artifact.height)
-    console.log(archChar.y + archChar.width > artifact.y)
+    // console.log("detect Two hit fired");
+    // console.log(artifact)
+    // console.log(archChar.x < artifact.x + artifact.width)
+    // console.log(archChar.x + archChar.width > artifact.x)
+    // console.log(archChar.y < artifact.y + artifact.height)
+    // console.log(archChar.y + archChar.width > artifact.y)
       if (
         archChar.x < artifact.x + artifact.width &&
         archChar.x + archChar.width > artifact.x &&
@@ -325,30 +326,6 @@ function detectHitTwo(artifact) {
       }
     }
   
-
-
-///=====pick up artifact/make renders disappear=====//
-//need to set detection function for artifacts first
-//if statement will say if spacebar && detect an artifact/rectangleABCD or E, clear rectangle based on character position
-let artifactTally = 0
-addEventListener("keyup", 
-    function pickUpArtifact (e) {
-        if(e.key == "Space" || e.key == " ") {
-            //call hit detection for specific coordinates
-
-            //if those coordinates are true
-            if(true) {
-                //clear the rectangle corresponding to those coordinates
-                
-
-                //add an artifact tally
-                artifactTally ++
-            }
-            artifactCounter.innerText = `Artifact (${artifactTally} /)`
-            checkForWin ()
-        }
-})
-
 
 //====== Handling movement ======///
 //creating an empty object for pressedKeys so we can call them in the function below
@@ -380,6 +357,28 @@ function handleMovement (speed) {
     
 }
 
+//====check if we hit an artifact ===//
+function checkArtifactHit (artifactArray) {
+    if(detectHit(artifactArray)){
+        //check each artifact
+        artifactArray.forEach (checkArray);
+        //take each object and see which one was hit
+        function checkArray(artifactItem) {
+            //checks for individual item hits
+           if(detectHitTwo(artifactItem)) {
+            playerMessage.innerHTML = "Press the <strong>Spacebar</strong> to pick up your artifact!"
+            //send back the item that was hit
+           return true
+           }
+        }
+    }
+}
+
+// if (checkArtifactHit(artifactArray)){
+//     artifactItem.collected = true
+//     // console.log('this item hit', artifactItem.x, artifactItem.y, artifactItem.height, artifactItem.width) //does not console
+// }
+
 let xFireball = 700;
 let yFireball = 20;
 let yDirection = 5
@@ -401,21 +400,7 @@ function animate () {
     if(detectHit(drawRectangle)) {
         handleMovement(-5)
     }
-    //check if we hit an artifact
-    if(detectHit(artifactArray)){
-        //check each artifact
-        artifactArray.forEach (checkArray);
-        //take each object and see which one was hit
-        function checkArray(artifactItem) {
-            console.log('checking item', artifactItem.x, artifactItem.y, artifactItem.height, artifactItem.width) //check
-            if (detectHitTwo(artifactItem)){
-                artifactItem.collected = true
-                console.log('this item hit', artifactItem.x, artifactItem.y, artifactItem.height, artifactItem.width) //does not console
-            }
-        }
-        // clearRectangle (artifactArray)
-        console.log('artifact found')
-    }
+    checkArtifactHit (artifactArray)
 
     if(yFireball > (310 - radiusFireball)) {
         yDirection = -1 * yDirection 
@@ -428,9 +413,6 @@ function animate () {
 }
 animate();
 
-
-
-
 //===== Event Listeners for key press ======//
 //if a key is pressed, pressedKeys *empty object* updates e *with the key pressed *.  e.key
 //e is event, key is the property
@@ -438,28 +420,42 @@ document.addEventListener('keydown', e => pressedKeys[e.key] = true)
 //if key is up = false
 document.addEventListener('keyup', e => pressedKeys[e.key] = false)
 
-//handle movement can access the pressedKeys e.key anytime because it is a global object
+///=====pick up artifact/make renders disappear=====//
+//need to set detection function for artifacts first
+//if statement will say if spacebar && detect an artifact/rectangleABCD or E, clear rectangle based on character position
+let artifactTally = 0
+addEventListener("keyup", 
+    function pickUpArtifact (e) {
+        if(e.code == "Space" || e.key == " ") {
+            console.log('spacebar')
+            //call hit detection for specific coordinates
+            // checkArtifactHit (artifactArray)
+            //if those coordinates are true
+            if(detectHit (artifactArray)) {
+                console.log('we have a hit')
+                //updated collected to true
+                artifactArray.forEach (checkArray);
+                //take each object and see which one was hit
+                function checkArray(artifactItem) {
+                    // console.log(artifactItem)
+                    //checks for individual item hits
+                    if(detectHitTwo(artifactItem)) {
+                        artifactItem.collected = true
+
+                        //add an artifact tally
+                        artifactTally ++
+                   }
+            }
+            artifactCounter.innerText = `Artifact ( ${artifactTally} / 5 )`
+            checkForWin ()
+        }
+        }
+})
 
 
 //======== Timers =========///
-//game will loop every 60 miliseconds until we clear the interval (later)
-//with no clearRect, we get a snake movement with a trail of where object has been
-//invoke handleMovement to make sure we can use the function repeatedly
-// setInterval( 
-//     function gameLoop () {
-//         ctx.clearRect(0,0, canvas.width, canvas.height)
-//         handleMovement(5)
-//         archChar.renderRect()
-        
-//     }, 60)
 
 //Game timer - 2 minutes to complete level, check for win scenario
-setInterval (
-    function timer () {
-
-        
-    }, 120000) //2 minutes 2 * 60 *1000
-
     //=====countdown from 2 minutes
     let countdown = 120
     let volacanoClockDown = setInterval (
@@ -486,25 +482,30 @@ setInterval (
 //=====set timeout for reminding players of volcano
 //can set timer within timeout to make text change sizes when there's 10 seconds left
 
-
+let collected= 0
 ///====Check for Win Scenario ===//
 function checkForWin () {
-    if (artifactTally === 5) {
-
+    artifactArray.forEach(function checkCollected (artifact) {
+        if (artifact.collected === true) {
+            collected ++
+        }
+    })
+    if(collected === 5) {
+        return true
     }
-}
+    }
 }) //playGame function on startBtn event listener
 
 
 //===== RESET BUTTON ====//
-resetBtn.addEventListener('click', 
-    function reset () {
-        playPage() 
+resetBtn.addEventListener('click', reset())
+function reset () {
+    playPage() 
         ///probably need timers to restart and character to redraw at beginning
-    })
-
+    }
     //==== Exit Button ====//
 exitBtn.addEventListener ('click', 
     function exitGame () {
+        reset()
         startPageFunc()
     })
