@@ -167,35 +167,40 @@ const artifactArray = [
         x: 360,
         y: 450,
         height: 50,
-        width: 50
+        width: 50,
+        collected: false
     }, 
    {
         img: tablet,
         x: 750,
         y: 450,
         height: 50,
-        width: 50
+        width: 50,
+        collected: false
     },
     {
         img: mummy,
         x: 0,
         y: 0,
         height: 50,
-        width: 50 
+        width: 50,
+        collected: false
     },    
     {
         img: treasure,
         x: 950,
         y: 250,
         height: 50,
-        width: 50
+        width: 50,
+        collected: false
     },
     {
         img: keyTreasure,
         x: 340,
         y: 0,
         height: 50,
-        width: 50
+        width: 50,
+        collected: false
     }   
 ];
 
@@ -210,13 +215,19 @@ function init() {
 }
 
 function draw() {
-    ctx.drawImage(scroll, 360, 450, 50, 50);
-    ctx.drawImage(tablet, 750, 450, 50, 50)
-    ctx.drawImage(mummy, 0, 0, 50, 50)
-    ctx.drawImage(treasure, 950, 250, 50, 50)
-    ctx.drawImage(keyTreasure, 340, 0, 50, 50)
+    //draw only if this has not been collected
+    artifactArray.forEach(checkToDraw);
+    
+    function checkToDraw (artifact) {
+        if (artifact.collected === false) {
+            ctx.drawImage(artifact.img, artifact.x, artifact.y, artifact.width, artifact.height);
+            // ctx.drawImage(tablet, 750, 450, 50, 50)
+            // ctx.drawImage(mummy, 0, 0, 50, 50)
+            // ctx.drawImage(treasure, 950, 250, 50, 50)
+            // ctx.drawImage(keyTreasure, 340, 0, 50, 50)
+            }
+    } 
 }
-
 
 //=====list of all rendered objects in room ===//
 function drawRect(rectangle) {
@@ -296,6 +307,25 @@ function detectHit(wall) {
   }
 // detectHit(drawRectangle)
 
+function detectHitTwo(artifact) {
+    console.log("detect Two hit fired");
+    console.log(artifact)
+    console.log(archChar.x < artifact.x + artifact.width)
+    console.log(archChar.x + archChar.width > artifact.x)
+    console.log(archChar.y < artifact.y + artifact.height)
+    console.log(archChar.y + archChar.width > artifact.y)
+      if (
+        archChar.x < artifact.x + artifact.width &&
+        archChar.x + archChar.width > artifact.x &&
+        archChar.y < artifact.y + artifact.height &&
+        archChar.y + archChar.width > artifact.y
+      ) {
+        console.log("collision");
+        return true;
+      }
+    }
+  
+
 
 ///=====pick up artifact/make renders disappear=====//
 //need to set detection function for artifacts first
@@ -309,7 +339,7 @@ addEventListener("keyup",
             //if those coordinates are true
             if(true) {
                 //clear the rectangle corresponding to those coordinates
-                ctx.clearRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+                
 
                 //add an artifact tally
                 artifactTally ++
@@ -362,16 +392,31 @@ function animate () {
 
     // xTwo = xTwo + 5;
     yFireball = yFireball + yDirection;
+    
+    //let player move
     handleMovement(5)
+    //redraw room
     drawRoom(drawRectangle)
+    //check if we hit a wall
     if(detectHit(drawRectangle)) {
         handleMovement(-5)
     }
+    //check if we hit an artifact
     if(detectHit(artifactArray)){
-        clearRectangle (artifactArray)
+        //check each artifact
+        artifactArray.forEach (checkArray);
+        //take each object and see which one was hit
+        function checkArray(artifactItem) {
+            console.log('checking item', artifactItem.x, artifactItem.y, artifactItem.height, artifactItem.width) //check
+            if (detectHitTwo(artifactItem)){
+                artifactItem.collected = true
+                console.log('this item hit', artifactItem.x, artifactItem.y, artifactItem.height, artifactItem.width) //does not console
+            }
+        }
+        // clearRectangle (artifactArray)
         console.log('artifact found')
-        console.log('artifact array', artifactArray )
     }
+
     if(yFireball > (310 - radiusFireball)) {
         yDirection = -1 * yDirection 
     } else if (yFireball < radiusFireball) {
