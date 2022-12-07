@@ -1,7 +1,7 @@
 * {
     margin: 0;
     text-align: center;
-    background-color: #00B1B0;
+    background: url('https://img.freepik.com/free-vector/liquid-hot-lava-ground-cracks-top-view_107791-14239.jpg?w=1480&t=st=1670455061~exp=1670455661~hmac=fcda9fa00d8b5da558535b6d711991054ae2791f65420fefcf30ac91f1374829');
 
   }
   
@@ -29,26 +29,35 @@
   canvas, #topBar {
     border: 3px solid black;
   }
-  main {
-        grid-area: canvas;
-        -webkit-text-fill-color: #FEC84D; /* Will override color (regardless of order) */
-        -webkit-text-stroke-width: 1px;
-        -webkit-text-stroke-color: black;
+main {
+    grid-area: canvas;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
     }
-    canvas {
-        /* grid-area: canvas; */
-        width: 1000;
-        height: 600;
-        background: url('https://opengameart.org/sites/default/files/styles/medium/public/Brick_01.png')
+canvas {
+    display:flex;
+    width: 1000;
+    height: 600;
+    background: url('https://opengameart.org/sites/default/files/styles/medium/public/Brick_01.png')
     }
  #topBar {
       grid-area: topBar;
     }
  #top-left {
     grid-area: top-left;
+    background: #2F5061;
+    -webkit-text-fill-color: #FEC84D; /* Will override color (regardless of order) */
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
   }
   #top-right {
     grid-area: top-right;
+    background: #2F5061;
+    -webkit-text-fill-color: #FEC84D; /* Will override color (regardless of order) */
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
   }
   #left-bumper {
     grid-area: left-bumper;
@@ -66,13 +75,18 @@
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    background-color: #2F5061;
+    background: #2F5061;
     border: 2px solid #F4EAE6;
+    /* width: 100vw; */
+    height: 100vh;
   }
   #Welcome {
         font-size: 4em;
         padding: .5em;
-        background-color: #2F5061;
+        background: #2F5061;
+        -webkit-text-fill-color: #FEC84D; /* Will override color (regardless of order) */
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: black;
   }
   #gameRules {
         font-size: 2em;
@@ -81,7 +95,26 @@
         inline-size: 60%;
         overflow-wrap: normal;
         margin: 0 auto;
-        background-color: #2F5061;
+        background: #2F5061;
+        -webkit-text-fill-color: #FEC84D; /* Will override color (regardless of order) */
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: black;
+  }
+  .gameInstructions {
+    font-size: 2em;
+    color: red;
+    background: #2F5061;
+
+  }
+  #player-message {
+    font-size: 2.5em;
+    color:#40B0DF;
+    -webkit-text-stroke-width: .5px;
+    -webkit-text-stroke-color: white;
+    background:#2F5061;
+    border: 1px solid white;
+    margin: 0 40px 10px 40px;
+    padding: 15px
   }
   #start, #reset, #exit {
     display: flex;
@@ -93,8 +126,8 @@
         align-items: center;
         margin: 0 auto;
         font-size: 2em;
-        background-color: #2F5061;
+        background: #77909d;
   }
   #start:hover, #reset:hover, #exit:hover {
-    background-color: #40B0DF;
+    background: #40B0DF;
   }
