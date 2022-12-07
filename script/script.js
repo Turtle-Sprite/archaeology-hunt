@@ -85,11 +85,11 @@ canvas.height = 500;
 
 ///======The start button is clicked. Game begins ====////
 
-startBtn.addEventListener("click", 
+let countdown = 120
 function playGame () {
     //hide the start screen/ call the play page
     playPage ()
-
+    
 // telling the computer we're rendering context 2D images?
 const ctx = canvas.getContext('2d')
 console.log(ctx)
@@ -125,13 +125,6 @@ class Drawing {
 }
 
 
-// ===== Draw Character====//
-//creates the "archaeologist character"
-const archChar = new Drawing(980, 470, 20, 20, "orange", 20)
-//calls the character to be drawn
-archChar.renderRect()
-
-
 //----Draw a Game room and contain all elements in an array, object or function?
 //Room 1
 const roomOneTop = new Drawing(900, 330, 100, 10, "blue", 0);
@@ -154,6 +147,10 @@ const roomFiveLavaLeft = new Drawing(340, 150, 200, 50, "red")
 //room 5 moving pieces
 const FireBallOne = new Drawing(700, 20, 0, 0, "lime", 15)
 const FireBallTwo = new Drawing(800, 280, 0, 0, "lime", 15)
+
+    // ===== Draw Character====//
+//creates the "archaeologist character"
+const archChar = new Drawing(980, 470, 20, 20, "orange", 20)
 
 //======Drawing Images ======///
 const scroll = new Image();
@@ -212,6 +209,8 @@ function init() {
     mummy.src = "https://img.freepik.com/free-vector/mummy-creation-cartoon-vector-illustration-stages-mummification-process-embalming-dead-body-wrapping-it-with-cloth-placing-egyptian-sarcophagus-traditions-ancient-egypt-cult-dead_107791-4230.jpg?w=740&t=st=1670281561~exp=1670282161~hmac=493907bfc8d8cc794c31165358798bee80895732c2891784c5ede18cbeaf037e"
     treasure.src = "https://img.freepik.com/free-vector/egyptian-composition-with-characters-ancient-god-creatures-box-full-valuable-items-vector-illustration_1284-66068.jpg?w=826&t=st=1670281964~exp=1670282564~hmac=ff184c6711a948bae3deb9f1332bebf939bc45a166bf6587c83b38b89a495af2"
     keyTreasure.src = "https://cdn-icons-png.flaticon.com/512/1048/1048522.png?w=826&t=st=1670282468~exp=1670283068~hmac=f76942f36d771c8ec7ecb6b29608abf8d917ab10c097fc2a619f00ba0dc98f7e"
+
+    
     window.requestAnimationFrame(draw);
 }
 
@@ -220,7 +219,8 @@ function init() {
 function draw() {
     //draw only if this has not been collected
     artifactArray.forEach(checkToDraw);
-    
+    //calls the character to be drawn
+    archChar.renderRect()
     function checkToDraw (artifact) {
         if (artifact.collected === false) {
             ctx.drawImage(artifact.img, artifact.x, artifact.y, artifact.width, artifact.height);
@@ -231,6 +231,7 @@ function draw() {
             }
     } 
 }
+
 
 //=====list of all rendered objects in room ===//
 
@@ -262,6 +263,7 @@ function drawRoom (drawRectangle) {
     }
 
 drawRoom(drawRectangle)
+
     
     // console.log(drawRoom)
     // console.log(drawRectangle)
@@ -276,7 +278,7 @@ drawRoom(drawRectangle)
 //   clearRectangle(roomFiveLavaLeft)
 
 let speed = 5
-/// ==== Rectangle collision detection ===== /////
+/// ==== Rectangle collision detection, return true ===== /////
 //call this function in the gameloop
 function detectHit(wall) {
     // console.log("detect hit fired");
@@ -303,10 +305,10 @@ function detectHit(wall) {
 //detects a single collision, returns true
 function detectHitTwo(artifact) {
       if (
-        archChar.x < artifact.x + artifact.width + 3 &&
-        archChar.x + archChar.width > artifact.x + 3 &&
-        archChar.y < artifact.y + artifact.height + 3&&
-        archChar.y + archChar.width > artifact.y + 3
+        archChar.x < artifact.x + artifact.width  &&
+        archChar.x + archChar.width > artifact.x  &&
+        archChar.y < artifact.y + artifact.height  &&
+        archChar.y + archChar.width > artifact.y
       ) {
         // console.log("collision");
         return true;
@@ -363,7 +365,18 @@ function checkArtifactHit (artifactArray) {
 
 //===== DEATH TRAP FUNCTIONS =====///
 
-//===FIREBALLS===//
+//===FIREBALLS & Lava ===//
+//Array of death traps
+const deathTrapsArray = [
+    roomThreeLavaOne,
+    roomFourBottLava,
+    roomFourRightLava,
+    roomFiveLeftWall, 
+    roomFiveLavaLeft,
+    FireBallOne,
+    FireBallTwo, 
+]
+console.log(deathTrapsArray)
 let xFireball = 700;
 let yFireball = 20;
 let yDirection = 5
@@ -387,6 +400,27 @@ function movingFireball () {
     }
 }
 
+//sends directly to lose page if hitting a death trap
+function trapDetectHit (deathTrapsArray) {
+    if(detectHit(deathTrapsArray)){
+        console.log("deathtrap array ", deathTrapsArray)
+        losePage ()
+    }
+}
+
+//blocks player from moving outside of the canvas 
+function stayOnPage () {
+    if(archChar.x + archChar.width >= canvas.width) {
+        handleMovement(-5)
+    } else if (archChar.y + archChar.height >= canvas.height) {
+        handleMovement(-5)
+    } else if (archChar.x < 0) {
+        handleMovement(-5) 
+    } else if (archChar.y < 0) {
+        handleMovement(-5)
+    }
+}
+
  //===== MAIN LOOP FUNCTION FOR GAME RIGHT NOW ===//
 
 function animate () {
@@ -394,12 +428,18 @@ function animate () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     //let player move
     handleMovement(5)
+    stayOnPage ()
     //redraw room
     drawRoom(drawRectangle)
     //check if we hit a wall
     if(detectHit(drawRectangle)) {
         handleMovement(-5)
     }
+    // if(detectHit(artifactArray)) {
+    //     handleMovement(-5)
+    // }
+    // check if we hit a death trap 
+    trapDetectHit (deathTrapsArray)
     //check if we hit an artifact
     checkArtifactHit (artifactArray)
     //make the fireball move
@@ -445,7 +485,6 @@ document.addEventListener("keyup",
                     //checks for individual item hits
                     if(detectHitTwo(artifactItem)) {
                         artifactItem.collected = true
-                        
                         //add an artifact tally
                         artifactTally ++
                    }
@@ -463,7 +502,7 @@ document.addEventListener("keyup",
 
 //Game timer - 2 minutes to complete level, check for win scenario
     //=====countdown from 2 minutes
-    let countdown = 120
+    countdown = 120
     let volacanoClockDown = setInterval (
         function timer () {
             // console.log('countdown ', countdown)
@@ -502,22 +541,22 @@ function checkForWin () {
     }
 
 
+}
 
-}) //playGame function on startBtn event listener
 //===== RESET BUTTON ====//
 function reset () {
-    playPage() 
-    countdown = 120
+    playGame()
+    console.log(countdown) 
     artifactTally = 0
     playerMessage.innerText = "Welcome! Time to hunt for artifacts!"
     artifactCounter.innerText = `Artifact ( ${artifactTally} / 5 )`
-    archChar = new Drawing(980, 470, 20, 20, "orange", 20)
+    // archChar = new Drawing(980, 470, 20, 20, "orange", 20)
     //calls the character to be drawn
-    archChar.renderRect()
+    // archChar.renderRect()
         ///probably need timers to restart and character to redraw at beginning
     }
 
-
+startBtn.addEventListener("click", playGame)
 resetBtn.addEventListener('click', reset)
     //==== Exit Button ====//
 exitBtn.addEventListener ('click', 

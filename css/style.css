@@ -1,13 +1,14 @@
 * {
     margin: 0;
     text-align: center;
+    background-color: #00B1B0;
+
   }
   
   #container {
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
       "Lucida Sans", Arial, sans-serif;
-    background-color: blueviolet;
-  
+    
     margin: 0 auto;
     display: grid;
     width: 100vw;
@@ -29,13 +30,16 @@
     border: 3px solid black;
   }
   main {
-      grid-area: canvas;
+        grid-area: canvas;
+        -webkit-text-fill-color: #FEC84D; /* Will override color (regardless of order) */
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: black;
     }
     canvas {
         /* grid-area: canvas; */
         width: 1000;
         height: 600;
-        background-color: grey;
+        background: url('https://opengameart.org/sites/default/files/styles/medium/public/Brick_01.png')
     }
  #topBar {
       grid-area: topBar;
@@ -48,9 +52,11 @@
   }
   #left-bumper {
     grid-area: left-bumper;
+
   }
   #right-bumper {
     grid-area: right-bumper;
+ 
   }
   #bottom {
     grid-area: bottom;
@@ -62,7 +68,26 @@
     
   }
   #Welcome {
-    
+        font-size: 4em;
+        padding: .5em;
   }
   #gameRules {
+        font-size: 2em;
+        padding: .2em;
+        inline-size: 40%;
+        overflow-wrap: normal;
+        justify-content: flex-end;
+        align-items: center;
+  }
+  #start, #reset, #exit {
+    display: flex;
+        border-radius: 20px;
+        padding: 20px 30px;
+        font-size: large;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+  }
+  #start:hover, #reset:hover, #exit:hover {
+    background-color: #40B0DF;
   }
