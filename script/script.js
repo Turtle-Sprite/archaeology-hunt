@@ -1,5 +1,5 @@
 //Vars for updating innerText
-let volcanoTimer = document.querySelector('#volcano-timer')
+let volcanoTimer = document.getElementById('volcano-timer')
     let artifactCounter = document.querySelector('#artifacts-counter')
     let playerMessage = document.querySelector('#player-message')
 
@@ -20,6 +20,9 @@ let topLeft = document.getElementById('top-left')
     let topBar = document.getElementById("topBar");
     let gameInstructions = document.querySelector("#gameInstructions");
 
+///=====GLOBAL VARIABLES NEEDED TO RESET GAME ====///
+let countdown = 0
+let artifactTally = 0
 ///==== Functions for hiding and revealing HTML Elements ===///
 
 
@@ -32,7 +35,7 @@ function startPageFunc () {
     exitBtn.style.display = "none"
 
     //display only these
-    startPage.style.display = "block"
+    startPage.style.display = "flex"
 }
 startPageFunc ()
 
@@ -89,15 +92,75 @@ function winPage () {
     exitBtn.style.display = "none"   
 }
 
+
+
+//======== Timers =========///
+
+//Game timer - 2 minutes to complete level, check for win scenario
+//=====countdown from 2 minutes
+countdown = 120
+let volacanoClockDown = setInterval (
+    function timer () {
+        // console.log('countdown ', countdown)
+        // console.log(archChar.x, archChar.y)
+        if (countdown === 120) {
+            volcanoTimer.innerText = `2:00`
+        } else if (countdown < 120 && countdown>= 70) {
+            volcanoTimer.innerText = ` 1:${countdown - 60}`
+        } else if (countdown >= 60 && countdown < 70) {
+            volcanoTimer.innerText = ` 1:0${countdown - 60}`
+        } else if (countdown < 60 && countdown >= 10) {
+            volcanoTimer.innerText = ` 0:${countdown}`
+        } else if (countdown< 10 && countdown>= 0){
+                volcanoTimer.innerText = `0:0${countdown}`
+        } else {
+            clearInterval(volacanoClockDown)
+            losePageTimeout ()
+        }
+        countdown--
+    }, 1000)
+
+//===== RESET Game ====//
+function reset () {
+    clearInterval(volacanoClockDown)
+    countdown = 120
+    volacanoClockDown = setInterval (
+    function timer () {
+        // console.log('countdown ', countdown)
+        // console.log(archChar.x, archChar.y)
+        if (countdown === 120) {
+            volcanoTimer.innerText = `2:00`
+        } else if (countdown < 120 && countdown>= 70) {
+            volcanoTimer.innerText = ` 1:${countdown - 60}`
+        } else if (countdown >= 60 && countdown < 70) {
+            volcanoTimer.innerText = ` 1:0${countdown - 60}`
+        } else if (countdown < 60 && countdown >= 10) {
+            volcanoTimer.innerText = ` 0:${countdown}`
+        } else if (countdown< 10 && countdown>= 0){
+                volcanoTimer.innerText = `0:0${countdown}`
+        } else {
+            clearInterval(volacanoClockDown)
+            losePageTimeout ()
+        }
+        countdown--
+    }, 1000)
+    console.log(countdown) 
+    artifactTally = 0
+    playerMessage.innerText = "Welcome! Time to hunt for artifacts!"
+    artifactCounter.innerText = `Artifact ( ${artifactTally} / 5 )`
+    volacanoClockDown ()
+    playGame()
+    }
+
 //===setting the canvas
 //setting width & height inside main container
 canvas.width = 1000;
 canvas.height = 500;
 
 
-///======The start button is clicked. Game begins ====////
+///======       GAME BEGINS         ====////
 
-let countdown = 120
+
 function playGame () {
     //hide the start screen/ call the play page
     playPage ()
@@ -214,7 +277,7 @@ const artifactArray = [
 ];
 
 //create source link for each image
-function init() {
+function imageDraw() {
     scroll.src =
     "https://img.freepik.com/free-vector/ancient-egypt-religion-culture-history-papyrus-with-main-gods-images-scarab-beetle-amulet-museum-exhibit-illustration_1284-64978.jpg?w=1380&t=st=1670207915~exp=1670208515~hmac=9ab1772ecda74a242f99dfd6d445dab74256906e3edca618f8776e6767a53f6b";
     tablet.src = "https://img.freepik.com/free-vector/egypt-flat-colorful-illustration_1284-19714.jpg?w=826&t=st=1670281279~exp=1670281879~hmac=a4b93334411677ee93af06ff5bc8e8629053194dbfde6f8db9ed0d6bd9db62ad"
@@ -222,7 +285,6 @@ function init() {
     treasure.src = "https://img.freepik.com/free-vector/egyptian-composition-with-characters-ancient-god-creatures-box-full-valuable-items-vector-illustration_1284-66068.jpg?w=826&t=st=1670281964~exp=1670282564~hmac=ff184c6711a948bae3deb9f1332bebf939bc45a166bf6587c83b38b89a495af2"
     keyTreasure.src = "https://cdn-icons-png.flaticon.com/512/1048/1048522.png?w=826&t=st=1670282468~exp=1670283068~hmac=f76942f36d771c8ec7ecb6b29608abf8d917ab10c097fc2a619f00ba0dc98f7e"
 
-    
     window.requestAnimationFrame(draw);
 }
 
@@ -261,6 +323,7 @@ function drawRect(rectangle) {
     rectangle.renderRect();
   }
   
+  //draws all objects in room each animation frame
   const drawRectangle = [
     roomOneTop,
     roomOneLeft,
@@ -454,17 +517,16 @@ function animate () {
     // if(detectHit(artifactArray)) {
     //     handleMovement(-5)
     // }
-    // check if we hit a death trap 
+    // check if we hit a death trap, if so, game over
     trapDetectHit (deathTrapsArray)
     //check if we hit an artifact
     checkArtifactHit (artifactArray)
     //make the fireball move
     movingFireball ()
 
-
     requestAnimationFrame(animate);
     //draw images
-    init();
+    imageDraw();
 }
 animate();
 
@@ -480,7 +542,6 @@ document.addEventListener('keyup', e => pressedKeys[e.key] = false)
 ///=====pick up artifact/make renders disappear=====//
 //need to set detection function for artifacts first
 //if statement will say if spacebar && detect an artifact/rectangleABCD or E, clear rectangle based on character position
-let artifactTally = 0
 document.addEventListener("keyup", 
     function pickUpArtifact (e) {
         if(e.code == "Space" || e.key == " ") {
@@ -514,32 +575,6 @@ document.addEventListener("keyup",
 })
 
 
-//======== Timers =========///
-
-//Game timer - 2 minutes to complete level, check for win scenario
-    //=====countdown from 2 minutes
-    countdown = 120
-    let volacanoClockDown = setInterval (
-        function timer () {
-            // console.log('countdown ', countdown)
-            // console.log(archChar.x, archChar.y)
-            if (countdown === 120) {
-                volcanoTimer.innerText = `2:00`
-            } else if (countdown < 120 && countdown>= 70) {
-                volcanoTimer.innerText = ` 1:${countdown - 60}`
-            } else if (countdown >= 60 && countdown < 70) {
-                volcanoTimer.innerText = ` 1:0${countdown - 60}`
-            } else if (countdown < 60 && countdown >= 10) {
-                volcanoTimer.innerText = ` 0:${countdown}`
-            } else if (countdown< 10 && countdown>= 0){
-                    volcanoTimer.innerText = `0:0${countdown}`
-            } else {
-                clearInterval(volacanoClockDown)
-                losePageTimeout ()
-            }
-            countdown--
-        }, 500)
-
 //=====set timeout for reminding players of volcano
 //can set timer within timeout to make text change sizes when there's 10 seconds left
 
@@ -557,20 +592,9 @@ function checkForWin () {
     }
 
 
-}
+}///playGame End
 
-//===== RESET BUTTON ====//
-function reset () {
-    playGame()
-    console.log(countdown) 
-    artifactTally = 0
-    playerMessage.innerText = "Welcome! Time to hunt for artifacts!"
-    artifactCounter.innerText = `Artifact ( ${artifactTally} / 5 )`
-    // archChar = new Drawing(980, 470, 20, 20, "orange", 20)
-    //calls the character to be drawn
-    // archChar.renderRect()
-        ///probably need timers to restart and character to redraw at beginning
-    }
+//===== BUTTONS =====///
 
 startBtn.addEventListener("click", playGame)
 resetBtn.addEventListener('click', reset)
