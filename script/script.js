@@ -1,31 +1,42 @@
 //Vars for updating innerText
 let volcanoTimer = document.getElementById('volcano-timer')
-    let artifactCounter = document.querySelector('#artifacts-counter')
-    let playerMessage = document.querySelector('#player-message')
+    let artifactCounter = document.getElementById('artifacts-counter')
+    let playerMessage = document.getElementById('player-message')
 
 //Vars for hiding start/game/reset elements
 let topLeft = document.getElementById('top-left')
-    let topRight= document.querySelector('#top-right')
-    let leftBumper= document.querySelector('#left-bumper')
-    let rightBumper= document.querySelector('#right-bumper')
+    let topRight= document.getElementById('top-right')
+    let leftBumper= document.getElementById('left-bumper')
+    let rightBumper= document.getElementById('right-bumper')
     let canvas= document.querySelector('canvas')
     let main = document.querySelector('main')
-    let bottom = document.querySelector('#bottom')
-    let startBtn = document.querySelector('#start')
-    let resetBtn = document.querySelector('#reset')
-    let startPage = document.querySelector('#startPage')
-    let welcome = document.querySelector('#Welcome')
-    let gameRules = document.querySelector('#gameRules')
-    let exitBtn = document.querySelector("#exit");
+    let bottom = document.getElementById('bottom')
+    let startBtn = document.getElementById('start')
+    let resetBtn = document.getElementById('reset')
+    let startPage = document.getElementById('startPage')
+    let welcome = document.getElementById('Welcome')
+    let gameRules = document.getElementById('gameRules')
+    let exitBtn = document.getElementById("exit");
     let topBar = document.getElementById("topBar");
-    let gameInstructions = document.querySelector("#gameInstructions");
+    let gameInstructions = document.getElementById("gameInstructions");
 
 ///=====GLOBAL VARIABLES NEEDED TO RESET GAME ====///
 let countdown = 0
 let artifactTally = 0
-///==== Functions for hiding and revealing HTML Elements ===///
+
+//characters/walls/images
+let roomOneTop, roomOneLeft, hallOneRight, hallTwoTop, 
+roomTwoTop, roomTwoLeftWall, roomThreeTop, roomThreeLavaOne, 
+roomFourBottLava, roomFourRightLava, roomFiveLeftWall, 
+roomFiveLavaLeft, FireBallOne, FireBallTwo, archChar;
+
+let scroll,tablet,mummy,keyTreasure,treasure;
+
+//empty array
+let artifactArray = [];
 
 
+//====== PAGE CHANGE FUNCTIONS ======///
 function startPageFunc () {
     //hide these elements
     topLeft.style.display = "none";
@@ -36,10 +47,14 @@ function startPageFunc () {
 
     //display only these
     startPage.style.display = "flex"
+    welcome.innerText = "Welcome!"
+    gameRules.innerText = "You have 2 minutes to collect all artifacts before the volcano explodes. Press Start to play.  "
 }
 startPageFunc ()
 
 function playPage () {
+    //reset all game
+    
     //display these elements
     topLeft.style.display = "block";
     topRight.style.display = "block";
@@ -65,8 +80,9 @@ function losePageTimeout () {
     exitBtn.style.display = "none"   
 }
 function losePageDeathTrap () {
+    
     //display these & change innerText 
-    startPage.style.display = "block"
+    startPage.style.display = "flex"
     welcome.innerText = "You lose!"
     gameRules.innerText = "You fell into hot magma. Press Start to play again. "
 
@@ -79,6 +95,7 @@ function losePageDeathTrap () {
     exitBtn.style.display = "none"   
 }
 function winPage () {
+    
     startPage.style.display = "block"
     welcome.innerText = "You Win!"
     gameRules.style.innerText = "You made it to safety with all of the artifacts. Press start to play again. "
@@ -91,9 +108,6 @@ function winPage () {
     topRight.style.display = "none";
     exitBtn.style.display = "none"   
 }
-
-
-
 //======== Timers =========///
 
 //Game timer - 2 minutes to complete level, check for win scenario
@@ -122,7 +136,9 @@ let volacanoClockDown = setInterval (
 
 //===== RESET Game ====//
 function reset () {
+    //clear timer
     clearInterval(volacanoClockDown)
+    //reset countdown clock
     countdown = 120
     volacanoClockDown = setInterval (
     function timer () {
@@ -144,13 +160,35 @@ function reset () {
         }
         countdown--
     }, 1000)
-    console.log(countdown) 
+
+    //invoking the playGame function
+    playGame()
+    //reset artifacts and innertext
     artifactTally = 0
     playerMessage.innerText = "Welcome! Time to hunt for artifacts!"
     artifactCounter.innerText = `Artifact ( ${artifactTally} / 5 )`
-    volacanoClockDown ()
-    playGame()
+
+    //resetting variables
+    FireBallOne.x = 700
+    FireBallOne.y = 20
+    FireBallTwo.x = 800
+    FireBallTwo.y =200
+    archChar.x = 980
+    archChar.y = 470
+
+    //resetting collected artifacts 
+    for(let i = 0; artifactArray.length < i; i++) {
+        artifactArray[i].collected = false
+        }
     }
+
+// =====Start Button ===//
+function startButtonFunc () {
+    console.log('I\'m being invoked')
+    startPageFunc ()
+    reset ()
+    // playGame ()
+}
 
 //===setting the canvas
 //setting width & height inside main container
@@ -202,39 +240,48 @@ class Drawing {
 
 //----Draw a Game room and contain all elements in an array, object or function?
 //Room 1
-const roomOneTop = new Drawing(900, 330, 100, 10, "blue", 0);
-const roomOneLeft = new Drawing(800, 400, 10, 100, "blue")
-const hallOneRight = new Drawing(900, 340, 10, 90, "blue")
-const hallTwoTop = new Drawing (830, 330, 80, 10, "blue")
+roomOneTop = new Drawing(900, 330, 100, 10, "blue", 0);
+roomOneLeft = new Drawing(800, 400, 10, 100, "blue")
+hallOneRight = new Drawing(900, 340, 10, 90, "blue")
+hallTwoTop = new Drawing (830, 330, 80, 10, "blue")
 ///Room 2
-const roomTwoTop = new Drawing(500, 310, 330, 30, "blue")
-const roomTwoLeftWall = new Drawing (410, 350, 10, 180, "blue")
+ roomTwoTop = new Drawing(500, 310, 330, 30, "blue")
+roomTwoLeftWall = new Drawing (410, 350, 10, 180, "blue")
 //room 3
-const roomThreeTop = new Drawing (150, 350, 260, 10, "blue")
-const roomThreeLavaOne = new Drawing(0, 290, 70, 210, "red")
+roomThreeTop = new Drawing (150, 350, 260, 10, "blue")
+roomThreeLavaOne = new Drawing(0, 290, 70, 210, "red")
 //room 4
-const roomFourBottLava = new Drawing(0, 100, 200, 190, "red")
-const roomFourRightLava = new Drawing(260, 000, 50, 240, "red")
+roomFourBottLava = new Drawing(0, 100, 200, 190, "red")
+roomFourRightLava = new Drawing(260, 000, 50, 240, "red")
 //room 5
-const roomFiveLeftWall = new Drawing(330, 0, 10, 200, "blue")
-const roomFiveLavaLeft = new Drawing(340, 150, 200, 50, "red")
+roomFiveLeftWall = new Drawing(330, 0, 10, 200, "blue")
+ roomFiveLavaLeft = new Drawing(340, 150, 200, 50, "red")
 
 //room 5 moving pieces
-const FireBallOne = new Drawing(700, 20, 0, 0, "lime", 15)
-const FireBallTwo = new Drawing(800, 280, 0, 0, "lime", 15)
+FireBallOne = new Drawing(700, 20, 0, 0, "lime", 15)
+FireBallTwo = new Drawing(800, 280, 0, 0, "lime", 15)
 
     // ===== Draw Character====//
 //creates the "archaeologist character"
-const archChar = new Drawing(980, 470, 20, 20, "orange", 20)
+archChar = new Drawing(980, 470, 20, 20, "orange", 20)
 
 //======Drawing Images ======///
-const scroll = new Image();
-const tablet = new Image();
-const mummy = new Image ();
-const keyTreasure = new Image ();
-const treasure = new Image ();
-const artifactArray = [
-     {
+scroll = new Image();
+tablet = new Image();
+mummy = new Image ();
+keyTreasure = new Image ();
+treasure = new Image ();
+
+
+//create source link for each image
+function imageDraw() {
+    scroll.src =
+    "https://img.freepik.com/free-vector/ancient-egypt-religion-culture-history-papyrus-with-main-gods-images-scarab-beetle-amulet-museum-exhibit-illustration_1284-64978.jpg?w=1380&t=st=1670207915~exp=1670208515~hmac=9ab1772ecda74a242f99dfd6d445dab74256906e3edca618f8776e6767a53f6b";
+    tablet.src = "https://img.freepik.com/free-vector/egypt-flat-colorful-illustration_1284-19714.jpg?w=826&t=st=1670281279~exp=1670281879~hmac=a4b93334411677ee93af06ff5bc8e8629053194dbfde6f8db9ed0d6bd9db62ad"
+    mummy.src = "https://img.freepik.com/free-vector/mummy-creation-cartoon-vector-illustration-stages-mummification-process-embalming-dead-body-wrapping-it-with-cloth-placing-egyptian-sarcophagus-traditions-ancient-egypt-cult-dead_107791-4230.jpg?w=740&t=st=1670281561~exp=1670282161~hmac=493907bfc8d8cc794c31165358798bee80895732c2891784c5ede18cbeaf037e"
+    treasure.src = "https://img.freepik.com/free-vector/egyptian-composition-with-characters-ancient-god-creatures-box-full-valuable-items-vector-illustration_1284-66068.jpg?w=826&t=st=1670281964~exp=1670282564~hmac=ff184c6711a948bae3deb9f1332bebf939bc45a166bf6587c83b38b89a495af2"
+    keyTreasure.src = "https://cdn-icons-png.flaticon.com/512/1048/1048522.png?w=826&t=st=1670282468~exp=1670283068~hmac=f76942f36d771c8ec7ecb6b29608abf8d917ab10c097fc2a619f00ba0dc98f7e"
+    artifactArray = [ {
         img: scroll,
         x: 360,
         y: 450,
@@ -273,18 +320,7 @@ const artifactArray = [
         height: 50,
         width: 50,
         collected: false
-    }   
-];
-
-//create source link for each image
-function imageDraw() {
-    scroll.src =
-    "https://img.freepik.com/free-vector/ancient-egypt-religion-culture-history-papyrus-with-main-gods-images-scarab-beetle-amulet-museum-exhibit-illustration_1284-64978.jpg?w=1380&t=st=1670207915~exp=1670208515~hmac=9ab1772ecda74a242f99dfd6d445dab74256906e3edca618f8776e6767a53f6b";
-    tablet.src = "https://img.freepik.com/free-vector/egypt-flat-colorful-illustration_1284-19714.jpg?w=826&t=st=1670281279~exp=1670281879~hmac=a4b93334411677ee93af06ff5bc8e8629053194dbfde6f8db9ed0d6bd9db62ad"
-    mummy.src = "https://img.freepik.com/free-vector/mummy-creation-cartoon-vector-illustration-stages-mummification-process-embalming-dead-body-wrapping-it-with-cloth-placing-egyptian-sarcophagus-traditions-ancient-egypt-cult-dead_107791-4230.jpg?w=740&t=st=1670281561~exp=1670282161~hmac=493907bfc8d8cc794c31165358798bee80895732c2891784c5ede18cbeaf037e"
-    treasure.src = "https://img.freepik.com/free-vector/egyptian-composition-with-characters-ancient-god-creatures-box-full-valuable-items-vector-illustration_1284-66068.jpg?w=826&t=st=1670281964~exp=1670282564~hmac=ff184c6711a948bae3deb9f1332bebf939bc45a166bf6587c83b38b89a495af2"
-    keyTreasure.src = "https://cdn-icons-png.flaticon.com/512/1048/1048522.png?w=826&t=st=1670282468~exp=1670283068~hmac=f76942f36d771c8ec7ecb6b29608abf8d917ab10c097fc2a619f00ba0dc98f7e"
-
+    }   ]
     window.requestAnimationFrame(draw);
 }
 
@@ -481,8 +517,9 @@ function movingFireball () {
 //sends directly to lose page if hitting a death trap
 function trapDetectHit (deathTrapsArray) {
     if(detectHit(deathTrapsArray)){
-        console.log("deathtrap array ", deathTrapsArray)
+        // console.log("deathtrap array ", deathTrapsArray)
         losePageDeathTrap ()
+        
     }
 }
 
@@ -587,7 +624,7 @@ function checkForWin () {
         }
     })
     if(collected === 5) {
-        return true
+        winPage ()
     }
     }
 
@@ -596,11 +633,11 @@ function checkForWin () {
 
 //===== BUTTONS =====///
 
-startBtn.addEventListener("click", playGame)
+startBtn.addEventListener("click", startButtonFunc)
 resetBtn.addEventListener('click', reset)
     //==== Exit Button ====//
 exitBtn.addEventListener ('click', 
     function exitGame () {
-        // reset()
+        reset()
         startPageFunc()
     })

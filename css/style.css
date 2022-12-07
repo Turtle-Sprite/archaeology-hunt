@@ -66,29 +66,34 @@
     flex-direction: column;
     justify-content: center;
     align-content: center;
-    border: 1px solid red;
+    background-color: #2F5061;
+    border: 2px solid #F4EAE6;
   }
   #Welcome {
         font-size: 4em;
         padding: .5em;
+        background-color: #2F5061;
   }
   #gameRules {
         font-size: 2em;
         display: flex;
-        padding: .2em;
+        padding: .4em;
         inline-size: 60%;
         overflow-wrap: normal;
         margin: 0 auto;
+        background-color: #2F5061;
   }
   #start, #reset, #exit {
     display: flex;
         border-radius: 20px;
-        padding: 20px 30px;
+        padding: 10px 30px;
         font-size: large;
         text-align: center;
         justify-content: center;
         align-items: center;
         margin: 0 auto;
+        font-size: 2em;
+        background-color: #2F5061;
   }
   #start:hover, #reset:hover, #exit:hover {
     background-color: #40B0DF;
