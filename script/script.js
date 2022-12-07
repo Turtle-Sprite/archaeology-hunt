@@ -47,8 +47,7 @@ function playPage () {
     //hide all elements in start page
     startPage.style.display = "none"
 }
-
-function losePage () {
+function losePageTimeout () {
     //display these & change innerText 
     startPage.style.display = "block"
     welcome.innerText = "You lose!"
@@ -62,7 +61,20 @@ function losePage () {
     topRight.style.display = "none";
     exitBtn.style.display = "none"   
 }
+function losePageDeathTrap () {
+    //display these & change innerText 
+    startPage.style.display = "block"
+    welcome.innerText = "You lose!"
+    gameRules.innerText = "You fell into hot magma. Press Start to play again. "
 
+    //hide these: 
+    gameInstructions.style.display = "none"
+    topLeft.style.display = "none";
+    canvas.style.display = "none";
+    resetBtn.style.display = "none";
+    topRight.style.display = "none";
+    exitBtn.style.display = "none"   
+}
 function winPage () {
     startPage.style.display = "block"
     welcome.innerText = "You Win!"
@@ -92,7 +104,7 @@ function playGame () {
     
 // telling the computer we're rendering context 2D images?
 const ctx = canvas.getContext('2d')
-console.log(ctx)
+
 
 
 //=====Drawing Class====//
@@ -233,7 +245,17 @@ function draw() {
 }
 
 
-//=====list of all rendered objects in room ===//
+//=====list of all rendered walls in room ===//
+
+const wallsArray = 
+    [roomOneTop,
+    roomOneLeft,
+    hallOneRight,
+    hallTwoTop,
+    roomTwoTop,
+    roomTwoLeftWall,
+    roomThreeTop,
+    roomFiveLeftWall]
 
 function drawRect(rectangle) {
     rectangle.renderRect();
@@ -253,7 +275,7 @@ function drawRect(rectangle) {
     roomFiveLeftWall,
     roomFiveLavaLeft
   ];
-  console.log(drawRectangle)
+//   console.log(drawRectangle)
   
   //draw the room set up
 function drawRoom (drawRectangle) {
@@ -263,13 +285,6 @@ function drawRoom (drawRectangle) {
     }
 
 drawRoom(drawRectangle)
-
-    
-    // console.log(drawRoom)
-    // console.log(drawRectangle)
-//   console.log(roomFiveLavaLeft.x, roomFiveLavaLeft.y, roomFiveLavaLeft.width, roomFiveLavaLeft.height);
-
-
 
   //=====Clearing Rectangles=====//
 //   function clearRectangle (rectangle) {
@@ -404,7 +419,7 @@ function movingFireball () {
 function trapDetectHit (deathTrapsArray) {
     if(detectHit(deathTrapsArray)){
         console.log("deathtrap array ", deathTrapsArray)
-        losePage ()
+        losePageDeathTrap ()
     }
 }
 
@@ -428,11 +443,12 @@ function animate () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     //let player move
     handleMovement(5)
+    //make sure character doesn't go off-screen
     stayOnPage ()
     //redraw room
     drawRoom(drawRectangle)
     //check if we hit a wall
-    if(detectHit(drawRectangle)) {
+    if(detectHit(wallsArray)) {
         handleMovement(-5)
     }
     // if(detectHit(artifactArray)) {
@@ -519,7 +535,7 @@ document.addEventListener("keyup",
                     volcanoTimer.innerText = `0:0${countdown}`
             } else {
                 clearInterval(volacanoClockDown)
-                losePage ()
+                losePageTimeout ()
             }
             countdown--
         }, 500)
