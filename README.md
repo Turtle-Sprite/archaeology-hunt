@@ -36,7 +36,7 @@ Wireframe in folder
 # Site Deployed at:
 https://turtle-sprite.github.io/archaeology-hunt/
 
-#Sources 
+# Sources 
 https://www.youtube.com/@ChrisCourses - collision detection and canvas basics
 https://www.youtube.com/@Frankslaboratory - sprites animation
 
