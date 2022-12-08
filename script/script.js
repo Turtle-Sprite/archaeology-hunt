@@ -26,6 +26,8 @@ let gameInstructions = document.getElementsByClassName("gameInstructions");
 //setting width & height of canvas inside main container
 canvas.width = 1000;
 canvas.height = 500;
+ // telling the computer we're rendering context 2D images?
+ const ctx = canvas.getContext('2d')
 
 ///=====GLOBAL VARIABLES NEEDED TO RESET GAME ====///
 let countdown = 0
@@ -46,6 +48,7 @@ let artifactArray = [];
 
 //array for lava filling rooms
 let lavaOne, lavaTwo, lavaThree, lavaFour
+let lavaRoomOne,lavaRoomTwo, lavaRoomThree, lavaRoomFour
 let lavaRoom = [
     { 
     visibility: false },
@@ -74,36 +77,31 @@ function startPageFunc() {
     //display only these
     startPage.style.display = "flex"
     welcome.innerText = "Welcome!"
-    gameRules.innerText = "You have 2 minutes to collect all artifacts before the volcano explodes. Press Start to play.  "
+    gameRules.innerText = "You have 2 minutes to collect all artifacts before the volcano explodes. Watch out for LAVA! Press Start to play.  "
 }
 startPageFunc()
 // =====Start Button ===//
-let lavaRoomOne
+
 function startButtonFunc() {
     // console.log('I\'m being invoked')
     startPageFunc()
     reset()
 
  //===== Countdown to lava rooms =====//
-    lavaRoomOne = setTimeout( setVisibility, 1000 *10 )
+    lavaRoomOne = setTimeout(setVisibility, 1000 *10 )
     function setVisibility () {
         lavaRoom[0].visibility= true
-        console.log('timeout 1 fired')
     }
-    let lavaRoomTwo = setTimeout( function () {
+    lavaRoomTwo = setTimeout( function () {
         lavaRoom[1].visibility= true
-        console.log('timeout 2 fired')
-        console.log(lavaRoom)
     }, 1000 *20 )
 
-    let lavaRoomThree = setTimeout (function () {
+    lavaRoomThree = setTimeout (function () {
         lavaRoom[2].visibility= true
-        console.log('timeout 3 fired')
     }, 1000 *40)
 
-    let lavaRoomFour = setTimeout( function () {
+    lavaRoomFour = setTimeout( function () {
         lavaRoom[3].visibility= true
-        console.log('timeout 4 fired')
         }, 1000 *60 )
     
 }
@@ -168,8 +166,7 @@ function winPage() {
 countdown = 120
 let volacanoClockDown = setInterval(
     function timer() {
-        // console.log('countdown ', countdown)
-        // console.log(archChar.x, archChar.y)
+
         if (countdown === 120) {
             volcanoTimer.innerText = `2:00`
         } else if (countdown < 120 && countdown >= 70) {
@@ -187,8 +184,6 @@ let volacanoClockDown = setInterval(
         countdown--
     }, 1000)
 
-
-  
 //===== RESET Game ====//
 function reset() {
     //clear timer
@@ -197,8 +192,7 @@ function reset() {
     countdown = 120
     volacanoClockDown = setInterval(
         function timer() {
-            // console.log('countdown ', countdown)
-            // console.log(archChar.x, archChar.y)
+
             if (countdown === 120) {
                 volcanoTimer.innerText = `2:00`
             } else if (countdown < 120 && countdown >= 70) {
@@ -238,9 +232,15 @@ function reset() {
     for (let i = 0; artifactArray.length < i; i++) {
         artifactArray[i].collected = false
     }
-
+    
     //resetting lava room 
     clearTimeout(lavaRoomOne)
+    clearTimeout(lavaRoomTwo)
+    clearTimeout(lavaRoomThree)
+    clearTimeout(lavaRoomFour)
+    for(let i = 0; lavaRoom.length < i; i++) {
+        lavaRoom[i].visibility = false
+    }
 }
 
 
@@ -251,8 +251,6 @@ function playGame() {
     //hide the start screen/ call the play page
     playPage()
 
-    // telling the computer we're rendering context 2D images?
-    const ctx = canvas.getContext('2d')
 
 
 
@@ -288,10 +286,10 @@ function playGame() {
 
     //----Draw a Game room and contain all elements in an array, object or function?
     //Room 1
-    roomOneTop = new Drawing(900, 330, 100, 10, "blue", 0);
+    roomOneTop = new Drawing(900, 310, 100, 30, "blue", 0);
     roomOneLeft = new Drawing(800, 400, 10, 100, "blue")
     hallOneRight = new Drawing(900, 340, 10, 90, "blue")
-    hallTwoTop = new Drawing(830, 330, 80, 10, "blue")
+    hallTwoTop = new Drawing(830, 310, 80, 30, "blue")
     ///Room 2
     roomTwoTop = new Drawing(500, 310, 330, 30, "blue")
     roomTwoLeftWall = new Drawing(410, 350, 10, 180, "blue")
@@ -319,7 +317,10 @@ function playGame() {
     mummy = new Image();
     keyTreasure = new Image();
     treasure = new Image();
+    let wall = new Image ();
     let lava = new Image ();
+    let firetrap = new Image ();
+    let IndianaJones = new Image ();
     artifactArray = [{
         img: scroll,
         x: 360,
@@ -364,12 +365,15 @@ function playGame() {
     //create source link for each image
     function imageDraw() {
         scroll.src =
-            "https://img.freepik.com/free-vector/ancient-egypt-religion-culture-history-papyrus-with-main-gods-images-scarab-beetle-amulet-museum-exhibit-illustration_1284-64978.jpg?w=1380&t=st=1670207915~exp=1670208515~hmac=9ab1772ecda74a242f99dfd6d445dab74256906e3edca618f8776e6767a53f6b";
-        tablet.src = "https://img.freepik.com/free-vector/egypt-flat-colorful-illustration_1284-19714.jpg?w=826&t=st=1670281279~exp=1670281879~hmac=a4b93334411677ee93af06ff5bc8e8629053194dbfde6f8db9ed0d6bd9db62ad"
-        mummy.src = "https://img.freepik.com/free-vector/mummy-creation-cartoon-vector-illustration-stages-mummification-process-embalming-dead-body-wrapping-it-with-cloth-placing-egyptian-sarcophagus-traditions-ancient-egypt-cult-dead_107791-4230.jpg?w=740&t=st=1670281561~exp=1670282161~hmac=493907bfc8d8cc794c31165358798bee80895732c2891784c5ede18cbeaf037e"
-        treasure.src = "https://img.freepik.com/free-vector/egyptian-composition-with-characters-ancient-god-creatures-box-full-valuable-items-vector-illustration_1284-66068.jpg?w=826&t=st=1670281964~exp=1670282564~hmac=ff184c6711a948bae3deb9f1332bebf939bc45a166bf6587c83b38b89a495af2"
-        keyTreasure.src = "https://cdn-icons-png.flaticon.com/512/1048/1048522.png?w=826&t=st=1670282468~exp=1670283068~hmac=f76942f36d771c8ec7ecb6b29608abf8d917ab10c097fc2a619f00ba0dc98f7e"
+            "https://img.icons8.com/external-justicon-flat-justicon/512/external-papyrus-egypt-justicon-flat-justicon.png";
+        tablet.src = "https://img.icons8.com/external-justicon-flat-justicon/512/external-cleopatra-egypt-justicon-flat-justicon.png"
+        mummy.src = "https://img.icons8.com/external-flat-icons-maxicons/512/external-ancient-archeology-flat-flat-icons-maxicons-3.png"
+        treasure.src = "https://img.icons8.com/external-flat-icons-maxicons/512/external-ancient-archeology-flat-flat-icons-maxicons-7.png"
+        keyTreasure.src = "https://img.icons8.com/external-dreamcreateicons-outline-color-dreamcreateicons/512/external-anubis-museum-dreamcreateicons-outline-color-dreamcreateicons.png"
         lava.src = "https://img.freepik.com/free-vector/lava-seamless-textures-game-backgrounds-set_107791-12638.jpg?w=996&t=st=1670462085~exp=1670462685~hmac=2341b197a98512354f617f82ccfe68e804eac5a9e2189f095c986c4e4dddc2fe"
+        // wall.src = "./img/Walls.png"
+        // firetrap.src = "./img/Fire_Trap.png"
+        IndianaJones.src = "./img/WalkLeft.png"
     
         window.requestAnimationFrame(draw);
     }
@@ -383,6 +387,10 @@ function playGame() {
         archChar.renderRect()
 
         //lava images draw over lava rectangles...no hit detection on JUST images
+        // ctx.drawImage(firetrap, 0, 0, 448, 41, 340, 150, 200, 50);
+        ctx.drawImage(wall, 4, 25, 12, 7, 400, 350, 200, 50);
+        
+        ctx.drawImage(IndianaJones, 3, 1, 60, 32, 800, 350, 100, 50);
         ctx.drawImage(lava, 0, 0, 160, 309, 340, 150, 200, 50);
         ctx.drawImage(lava, 0, 0, 160, 309, 0, 290, 70, 210);
         ctx.drawImage(lava, 0, 0, 160, 309, 0, 100, 200, 190);
@@ -477,7 +485,6 @@ function playGame() {
             }
         }
     }
-    // detectHit(drawRectangle)
 
     //detects a single collision, returns true
     function detectHitTwo(artifact) {
@@ -487,7 +494,6 @@ function playGame() {
             archChar.y < artifact.y + artifact.height &&
             archChar.y + archChar.width > artifact.y
         ) {
-            // console.log("collision");
             return true;
         }
     }
@@ -499,7 +505,6 @@ function playGame() {
             archChar.y < fireball.y + fireball.radius&&
             archChar.y + archChar.width > fireball.y + fireball.radius
         ) {
-            // console.log("collision");
             return true;
         }
     }
@@ -511,8 +516,7 @@ pressedKeys = {}
 //creating movement for archaeologist function
 //needs e-event for knowing which key was pressed
 function handleMovement(speed) {
-    // console.log('handle movement', )
-    // console.log(archChar)
+
     //move down
     if (pressedKeys.w) {
         archChar.y -= speed
@@ -530,10 +534,7 @@ function handleMovement(speed) {
         archChar.x += speed
     }
     archChar.renderRect()
-    // detectHit(drawRectangle)
-    
-    //spacebar portion
-    // console.log('pressed keys', pressedKeys)
+
 }
 
     //====check if we hit an artifact from artifact array, returns true===//
@@ -545,8 +546,7 @@ function handleMovement(speed) {
             function checkArray(artifactItem) {
                 //checks for individual item hits
                 if (detectHitTwo(artifactItem)) {
-                    playerMessage.innerText = "Press the Spacebar to pick up your artifact!"
-                    //send back the item that was hit
+                    // playerMessage.innerText = "Press the Spacebar to pick up your artifact!"
                     return true
                 }
             }
@@ -605,7 +605,6 @@ function handleMovement(speed) {
     //sends directly to lose page if hitting a death trap
     function trapDetectHit(deathTrapsArray) {
         if (detectHit(deathTrapsArray)) {
-            // console.log("deathtrap array ", deathTrapsArray)
             losePageDeathTrap()
 
         }
@@ -639,9 +638,7 @@ function handleMovement(speed) {
         if (detectHit(wallsArray)) {
             handleMovement(-5)
         }
-        // if(detectHit(artifactArray)) {
-        //     handleMovement(-5)
-        // }
+
         // check if we hit a death trap, if so, game over
         trapDetectHit(deathTrapsArray)
         //check if we hit an artifact
@@ -695,7 +692,7 @@ document.addEventListener("keyup",
             }
             artifactCounter.innerText = `Artifact ( ${artifactTally} / 5 )`
 
-            playerMessage.innerText = "You found an artifact!"
+            // playerMessage.innerText = "You found an artifact!"
         }
         }
 })

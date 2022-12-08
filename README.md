@@ -39,5 +39,7 @@ https://turtle-sprite.github.io/archaeology-hunt/
 # Sources 
 *https://www.youtube.com/@ChrisCourses - collision detection and canvas basics
 *https://www.youtube.com/@Frankslaboratory - sprites animation
+* https://icons8.com/icons/set/key - game icons
+* https://www.freepik.com/ - background images
 
 

@@ -21,6 +21,7 @@
       "left-bumper canvas canvas canvas canvas right-bumper"
       "bottom bottom bottom bottom bottom bottom";
   }
+
   #top-left,
   #top-right,
   #left-bumper,
@@ -104,7 +105,7 @@ canvas {
   }
   .gameInstructions {
     font-size: 2em;
-    color: red;
+    color: rgb(221, 94, 65);
     background: #2F5061;
 
   }
