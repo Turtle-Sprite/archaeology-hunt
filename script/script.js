@@ -44,6 +44,20 @@ let scroll, tablet, mummy, keyTreasure, treasure;
 //empty array
 let artifactArray = [];
 
+//array for lava filling rooms
+let lavaOne, lavaTwo, lavaThree, lavaFour
+let lavaRoom = [
+    { 
+    visibility: false },
+    {
+    visibility: false},
+    {
+    visibility: false
+    }, 
+    {
+    visibility: false},
+]
+
 //empty object for handling movement
 let pressedKeys = {}
 
@@ -64,11 +78,34 @@ function startPageFunc() {
 }
 startPageFunc()
 // =====Start Button ===//
+let lavaRoomOne
 function startButtonFunc() {
     // console.log('I\'m being invoked')
     startPageFunc()
     reset()
-    // playGame ()
+
+ //===== Countdown to lava rooms =====//
+    lavaRoomOne = setTimeout( setVisibility, 1000 *10 )
+    function setVisibility () {
+        lavaRoom[0].visibility= true
+        console.log('timeout 1 fired')
+    }
+    let lavaRoomTwo = setTimeout( function () {
+        lavaRoom[1].visibility= true
+        console.log('timeout 2 fired')
+        console.log(lavaRoom)
+    }, 1000 *20 )
+
+    let lavaRoomThree = setTimeout (function () {
+        lavaRoom[2].visibility= true
+        console.log('timeout 3 fired')
+    }, 1000 *40)
+
+    let lavaRoomFour = setTimeout( function () {
+        lavaRoom[3].visibility= true
+        console.log('timeout 4 fired')
+        }, 1000 *60 )
+    
 }
 
 function playPage() {
@@ -150,9 +187,8 @@ let volacanoClockDown = setInterval(
         countdown--
     }, 1000)
 
-//===== Countdown to lava rooms =====//
 
-
+  
 //===== RESET Game ====//
 function reset() {
     //clear timer
@@ -187,7 +223,7 @@ function reset() {
     collected = 0
     artifactTally = 0
     // pressedKeys = {}
-    playerMessage.innerText = "Welcome! Time to hunt for artifacts!"
+    // playerMessage.innerText = "Welcome! Time to hunt for artifacts!"
     artifactCounter.innerText = `Artifact ( ${artifactTally} / 5 )`
 
     //resetting variables
@@ -202,6 +238,9 @@ function reset() {
     for (let i = 0; artifactArray.length < i; i++) {
         artifactArray[i].collected = false
     }
+
+    //resetting lava room 
+    clearTimeout(lavaRoomOne)
 }
 
 
@@ -321,7 +360,7 @@ function playGame() {
         width: 50,
         collected: false
     }]
-
+    
     //create source link for each image
     function imageDraw() {
         scroll.src =
@@ -348,12 +387,27 @@ function playGame() {
         ctx.drawImage(lava, 0, 0, 160, 309, 0, 290, 70, 210);
         ctx.drawImage(lava, 0, 0, 160, 309, 0, 100, 200, 190);
         ctx.drawImage(lava, 0, 0, 160, 309, 260, 0, 80, 240);
+        // console.log(lavaRoom[0])
+        if (lavaRoom[0].visibility == true) {
+            ctx.drawImage(lava, 0, 0, 160, 309, 820, 340, 200, 200);
+        } 
+        if (lavaRoom[1].visibility == true) {
+                console.log(lavaRoom)
+            ctx.drawImage(lava, 0, 0, 160, 309, 420, 340, 400, 200);
+        }
+        if (lavaRoom[2].visibility == true){
+            ctx.drawImage(lava, 0, 0, 160, 309, 70, 340, 400, 200);
+        }
+        if (lavaRoom[3].visibility == true) {
+            ctx.drawImage(lava, 0, 0, 160, 309, 0, 0, 200, 100);
+        }
 
         function checkToDraw(artifact) {
             if (artifact.collected === false) {
                 ctx.drawImage(artifact.img, artifact.x, artifact.y, artifact.width, artifact.height);
             }
         }
+
     }
     //=====list of all rendered walls in room ===//
 
@@ -438,7 +492,17 @@ function playGame() {
         }
     }
 
-
+    function detectHitThree(fireball) {
+        if (
+            archChar.x < fireball.x + fireball.width &&
+            archChar.x + archChar.width > fireball.x &&
+            archChar.y < fireball.y + fireball.radius&&
+            archChar.y + archChar.width > fireball.y + fireball.radius
+        ) {
+            // console.log("collision");
+            return true;
+        }
+    }
     //========Handling Movement Function ====///
 //====== Handling movement ======///
 //creating an empty object for pressedKeys so we can call them in the function below
@@ -484,6 +548,19 @@ function handleMovement(speed) {
                     playerMessage.innerText = "Press the Spacebar to pick up your artifact!"
                     //send back the item that was hit
                     return true
+                }
+            }
+        }
+    }
+    function checkFireballHit(fireballArray) {
+        if (detectHit(fireballArray)) {
+            //check each fireball
+            fireballArray.forEach(checkArray);
+            //take each object and see which one was hit
+            function checkArray(fireball) {
+                //checks for individual item hits
+                if (detectHitThree(fireball)) {
+                    losePageDeathTrap ()
                 }
             }
         }
@@ -571,7 +648,7 @@ function handleMovement(speed) {
         checkArtifactHit(artifactArray)
         //make the fireball move
         movingFireball()
-
+        checkFireballHit(FireBallOne)
         animationRequest = requestAnimationFrame(animate);
         //draw images
         imageDraw();
