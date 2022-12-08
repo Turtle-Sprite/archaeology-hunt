@@ -48,6 +48,7 @@ canvas {
  #top-left {
     grid-area: top-left;
     background: #2F5061;
+    font-size: 30px;
     -webkit-text-fill-color: #FEC84D; /* Will override color (regardless of order) */
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
@@ -55,6 +56,7 @@ canvas {
   #top-right {
     grid-area: top-right;
     background: #2F5061;
+    font-size: 30px;
     -webkit-text-fill-color: #FEC84D; /* Will override color (regardless of order) */
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
@@ -78,7 +80,7 @@ canvas {
     background: #2F5061;
     border: 2px solid #F4EAE6;
     /* width: 100vw; */
-    height: 100vh;
+    /* height: 100vh; */
   }
   #Welcome {
         font-size: 4em;

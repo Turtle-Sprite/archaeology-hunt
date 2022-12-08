@@ -1,3 +1,5 @@
+
+
 //Vars for updating innerText
 let volcanoTimer = document.getElementById('volcano-timer')
 let artifactCounter = document.getElementById('artifacts-counter')
@@ -19,6 +21,11 @@ let gameRules = document.getElementById('gameRules')
 let exitBtn = document.getElementById("exit");
 let topBar = document.getElementById("topBar");
 let gameInstructions = document.getElementsByClassName("gameInstructions");
+
+//===setting the canvas
+//setting width & height of canvas inside main container
+canvas.width = 1000;
+canvas.height = 500;
 
 ///=====GLOBAL VARIABLES NEEDED TO RESET GAME ====///
 let countdown = 0
@@ -79,12 +86,11 @@ function playPage() {
 }
 function losePageTimeout() {
     //display these & change innerText 
-    startPage.style.display = "block"
+    startPage.style.display = "flex"
     welcome.innerText = "You lose!"
     gameRules.innerText = "The volcano exploded and you did not make it to safety. Press start to play again. "
 
     //hide these: 
-    gameInstructions.style.display = "none"
     topLeft.style.display = "none";
     canvas.style.display = "none";
     resetBtn.style.display = "none";
@@ -99,7 +105,6 @@ function losePageDeathTrap() {
     gameRules.innerText = "You fell into hot magma. Press Start to play again. "
 
     //hide these: 
-    gameInstructions.style.display = "none"
     topLeft.style.display = "none";
     canvas.style.display = "none";
     resetBtn.style.display = "none";
@@ -113,7 +118,6 @@ function winPage() {
     gameRules.innerText = "You made it to safety with all of the artifacts. Press start to play again. "
 
     //hide these: 
-    gameInstructions.style.display = "none"
     topLeft.style.display = "none";
     canvas.style.display = "none";
     resetBtn.style.display = "none";
@@ -145,6 +149,9 @@ let volacanoClockDown = setInterval(
         }
         countdown--
     }, 1000)
+
+//===== Countdown to lava rooms =====//
+
 
 //===== RESET Game ====//
 function reset() {
@@ -196,72 +203,6 @@ function reset() {
         artifactArray[i].collected = false
     }
 }
-
-
-//========Handling Movement Function ====///
-//====== Handling movement ======///
-//creating an empty object for pressedKeys so we can call them in the function below
-pressedKeys = {}
-
-//creating movement for archaeologist function
-//needs e-event for knowing which key was pressed
-function handleMovement(speed) {
-    // console.log('handle movement', )
-    // console.log(archChar)
-    //move down
-    if (pressedKeys.w) {
-        archChar.y -= speed
-    }
-    //move up
-    if (pressedKeys.s) {
-        archChar.y += speed
-    }
-    //move left
-    if (pressedKeys.a) {
-        archChar.x -= speed
-    }
-    //move right
-    if (pressedKeys.d) {
-        archChar.x += speed
-    }
-    archChar.renderRect()
-    // detectHit(drawRectangle)
-    if (pressedKeys.code == "Space" || pressedKeys.key == " ") {
-        console.log('spacebar')
-        //call hit detection for specific coordinates
-        //if those coordinates are true
-        if (detectHit(artifactArray)) {
-
-            // console.log('we have a hit')
-            //updated collected to true
-            artifactArray.forEach(checkArray);
-            //take each object and see which one was hit
-            function checkArray(artifactItem) {
-
-                //add a buffer area where 
-
-                //checks for individual item hits
-                if (detectHitTwo(artifactItem)) {
-                    artifactItem.collected = true
-                    //add an artifact tally
-                    artifactTally++
-                    if (artifactTally = 5) {
-                        winPage()
-                    }
-                }
-            }
-            artifactCounter.innerText = `Artifact ( ${artifactTally} / 5 )`
-
-            playerMessage.innerText = "You found an artifact!"
-            // checkForWin ()
-        }
-    }
-}
-
-//===setting the canvas
-//setting width & height inside main container
-canvas.width = 1000;
-canvas.height = 500;
 
 
 ///======       GAME BEGINS         ====////
@@ -320,7 +261,7 @@ function playGame() {
     roomThreeLavaOne = new Drawing(0, 290, 70, 210, "red")
     //room 4
     roomFourBottLava = new Drawing(0, 100, 200, 190, "red")
-    roomFourRightLava = new Drawing(260, 000, 50, 240, "red")
+    roomFourRightLava = new Drawing(260, 000, 70, 240, "red")
     //room 5
     roomFiveLeftWall = new Drawing(330, 0, 10, 200, "blue")
     roomFiveLavaLeft = new Drawing(340, 150, 200, 50, "red")
@@ -339,6 +280,47 @@ function playGame() {
     mummy = new Image();
     keyTreasure = new Image();
     treasure = new Image();
+    let lava = new Image ();
+    artifactArray = [{
+        img: scroll,
+        x: 360,
+        y: 450,
+        height: 50,
+        width: 50,
+        collected: false
+    },
+    {
+        img: tablet,
+        x: 750,
+        y: 450,
+        height: 50,
+        width: 50,
+        collected: false
+    },
+    {
+        img: mummy,
+        x: 0,
+        y: 0,
+        height: 50,
+        width: 50,
+        collected: false
+    },
+    {
+        img: treasure,
+        x: 950,
+        y: 250,
+        height: 50,
+        width: 50,
+        collected: false
+    },
+    {
+        img: keyTreasure,
+        x: 340,
+        y: 0,
+        height: 50,
+        width: 50,
+        collected: false
+    }]
 
     //create source link for each image
     function imageDraw() {
@@ -348,46 +330,8 @@ function playGame() {
         mummy.src = "https://img.freepik.com/free-vector/mummy-creation-cartoon-vector-illustration-stages-mummification-process-embalming-dead-body-wrapping-it-with-cloth-placing-egyptian-sarcophagus-traditions-ancient-egypt-cult-dead_107791-4230.jpg?w=740&t=st=1670281561~exp=1670282161~hmac=493907bfc8d8cc794c31165358798bee80895732c2891784c5ede18cbeaf037e"
         treasure.src = "https://img.freepik.com/free-vector/egyptian-composition-with-characters-ancient-god-creatures-box-full-valuable-items-vector-illustration_1284-66068.jpg?w=826&t=st=1670281964~exp=1670282564~hmac=ff184c6711a948bae3deb9f1332bebf939bc45a166bf6587c83b38b89a495af2"
         keyTreasure.src = "https://cdn-icons-png.flaticon.com/512/1048/1048522.png?w=826&t=st=1670282468~exp=1670283068~hmac=f76942f36d771c8ec7ecb6b29608abf8d917ab10c097fc2a619f00ba0dc98f7e"
-        artifactArray = [{
-            img: scroll,
-            x: 360,
-            y: 450,
-            height: 50,
-            width: 50,
-            collected: false
-        },
-        {
-            img: tablet,
-            x: 750,
-            y: 450,
-            height: 50,
-            width: 50,
-            collected: false
-        },
-        {
-            img: mummy,
-            x: 0,
-            y: 0,
-            height: 50,
-            width: 50,
-            collected: false
-        },
-        {
-            img: treasure,
-            x: 950,
-            y: 250,
-            height: 50,
-            width: 50,
-            collected: false
-        },
-        {
-            img: keyTreasure,
-            x: 340,
-            y: 0,
-            height: 50,
-            width: 50,
-            collected: false
-        }]
+        lava.src = "https://img.freepik.com/free-vector/lava-seamless-textures-game-backgrounds-set_107791-12638.jpg?w=996&t=st=1670462085~exp=1670462685~hmac=2341b197a98512354f617f82ccfe68e804eac5a9e2189f095c986c4e4dddc2fe"
+    
         window.requestAnimationFrame(draw);
     }
 
@@ -398,18 +342,19 @@ function playGame() {
         artifactArray.forEach(checkToDraw);
         //calls the character to be drawn
         archChar.renderRect()
+
+        //lava images draw over lava rectangles...no hit detection on JUST images
+        ctx.drawImage(lava, 0, 0, 160, 309, 340, 150, 200, 50);
+        ctx.drawImage(lava, 0, 0, 160, 309, 0, 290, 70, 210);
+        ctx.drawImage(lava, 0, 0, 160, 309, 0, 100, 200, 190);
+        ctx.drawImage(lava, 0, 0, 160, 309, 260, 0, 80, 240);
+
         function checkToDraw(artifact) {
             if (artifact.collected === false) {
                 ctx.drawImage(artifact.img, artifact.x, artifact.y, artifact.width, artifact.height);
-                // ctx.drawImage(tablet, 750, 450, 50, 50)
-                // ctx.drawImage(mummy, 0, 0, 50, 50)
-                // ctx.drawImage(treasure, 950, 250, 50, 50)
-                // ctx.drawImage(keyTreasure, 340, 0, 50, 50)
             }
         }
     }
-
-
     //=====list of all rendered walls in room ===//
 
     const wallsArray =
@@ -494,35 +439,38 @@ function playGame() {
     }
 
 
-    // //====== Handling movement ======///
-    // //creating an empty object for pressedKeys so we can call them in the function below
-    // const pressedKeys = {}
-    // // console.log(pressedKeys)
-    // //creating movement for archaeologist function
-    //     //needs e-event for knowing which key was pressed
-    // function handleMovement (speed) {
-    //     // console.log('handle movement', )
-    //     // console.log(archChar)
-    //     //move down
-    //     if (pressedKeys.w) {
-    //         archChar.y -= speed
-    //     }
-    //     //move up
-    //     if (pressedKeys.s) {
-    //         archChar.y+= speed
-    //     }
-    //     //move left
-    //     if (pressedKeys.a) {
-    //         archChar.x -= speed
-    //     }
-    //     //move right
-    //     if (pressedKeys.d) {
-    //         archChar.x += speed
-    //     }
-    //     archChar.renderRect()
-    //     // detectHit(drawRectangle)
+    //========Handling Movement Function ====///
+//====== Handling movement ======///
+//creating an empty object for pressedKeys so we can call them in the function below
+pressedKeys = {}
 
-    // }
+//creating movement for archaeologist function
+//needs e-event for knowing which key was pressed
+function handleMovement(speed) {
+    // console.log('handle movement', )
+    // console.log(archChar)
+    //move down
+    if (pressedKeys.w) {
+        archChar.y -= speed
+    }
+    //move up
+    if (pressedKeys.s) {
+        archChar.y += speed
+    }
+    //move left
+    if (pressedKeys.a) {
+        archChar.x -= speed
+    }
+    //move right
+    if (pressedKeys.d) {
+        archChar.x += speed
+    }
+    archChar.renderRect()
+    // detectHit(drawRectangle)
+    
+    //spacebar portion
+    // console.log('pressed keys', pressedKeys)
+}
 
     //====check if we hit an artifact from artifact array, returns true===//
     function checkArtifactHit(artifactArray) {
@@ -641,13 +589,39 @@ function playGame() {
     document.addEventListener('keyup', e => pressedKeys[e.key] = false)
 
     ///=====pick up artifact/make renders disappear=====//
-    //need to set detection function for artifacts first
-    //if statement will say if spacebar && detect an artifact/rectangleABCD or E, clear rectangle based on character position
-    // document.addEventListener("keyup", 
-    //     function pickUpArtifact (e) {
+///=====pick up artifact/make renders disappear=====//
+//need to set detection function for artifacts first
+document.addEventListener("keyup", 
+    function pickUpArtifact (e) {
+        if(e.code == "Space" || e.key == " ") {
+            // console.log('spacebar')
+            //call hit detection for specific coordinates
+            //if those coordinates are true
+            if(detectHit (artifactArray)) {
+                //updated collected to true
+                artifactArray.forEach (checkArray);
+                //take each object and see which one was hit
+                function checkArray(artifactItem) {
 
-    //         }
-    // })
+                    //checks for individual item hits
+                    if(detectHitTwo(artifactItem)) {
+                        if(artifactItem.collected === false) {
+                        artifactItem.collected = true
+                        //add an artifact tally
+                        artifactTally ++
+                        console.log(artifactItem)
+                    } 
+                   }
+                   if(artifactTally === 5) {
+                    winPage ()
+                   }
+            }
+            artifactCounter.innerText = `Artifact ( ${artifactTally} / 5 )`
+
+            playerMessage.innerText = "You found an artifact!"
+        }
+        }
+})
 
     ///====Check for Win Scenario, returns true if achieved ===//
     // function checkForWin () {
@@ -663,6 +637,7 @@ function playGame() {
 
 
 }///playGame End
+
 
 //===== BUTTONS =====///
 
