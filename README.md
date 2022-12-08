@@ -32,7 +32,7 @@ Wireframe in folder
 # Any potential roadblocks
 * Creating a screen that changes when you hit the edge of the canvas, and gives more running room
 
-#Approach to complete:
+# Approach to complete:
 * created wirframe
 * created canvas charcter and movement
 * created level layout
