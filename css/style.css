@@ -40,7 +40,7 @@ main {
 canvas {
     display:flex;
     width: 1000;
-    height: 600;
+    height: 500;
     background: url('https://opengameart.org/sites/default/files/styles/medium/public/Brick_01.png')
     }
  #topBar {
