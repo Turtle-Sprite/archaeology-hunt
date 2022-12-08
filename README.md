@@ -32,6 +32,14 @@ Wireframe in folder
 # Any potential roadblocks
 * Creating a screen that changes when you hit the edge of the canvas, and gives more running room
 
+#Approach to complete:
+* created wirframe
+* created canvas charcter and movement
+* created level layout
+* created hit detection
+* set timers 
+* added win/lose page functions
+* focused on styling and CSS
 
 # Site Deployed at:
 https://turtle-sprite.github.io/archaeology-hunt/
