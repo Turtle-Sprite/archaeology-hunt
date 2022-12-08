@@ -238,7 +238,7 @@ function reset() {
     clearTimeout(lavaRoomTwo)
     clearTimeout(lavaRoomThree)
     clearTimeout(lavaRoomFour)
-    for(let i = 0; lavaRoom.length < i; i++) {
+    for(let i = 0; lavaRoom.length > i; i++) {
         lavaRoom[i].visibility = false
     }
 }
@@ -251,14 +251,10 @@ function playGame() {
     //hide the start screen/ call the play page
     playPage()
 
-
-
-
     //=====Drawing Class====//
     //creating the players/game pieces
     class Drawing {
 
-        //if I wanted to count lives, I think I'd do it here
         constructor(x, y, width, height, color, radius) {
             this.x = x
             this.y = y
@@ -286,21 +282,21 @@ function playGame() {
 
     //----Draw a Game room and contain all elements in an array, object or function?
     //Room 1
-    roomOneTop = new Drawing(900, 310, 100, 30, "blue", 0);
-    roomOneLeft = new Drawing(800, 400, 10, 100, "blue")
-    hallOneRight = new Drawing(900, 340, 10, 90, "blue")
-    hallTwoTop = new Drawing(830, 310, 80, 30, "blue")
+    roomOneTop = new Drawing(900, 310, 100, 30, "brown", 0);
+    roomOneLeft = new Drawing(800, 400, 10, 100, "brown")
+    hallOneRight = new Drawing(900, 340, 10, 90, "brown")
+    hallTwoTop = new Drawing(830, 310, 80, 30, "brown")
     ///Room 2
-    roomTwoTop = new Drawing(500, 310, 330, 30, "blue")
-    roomTwoLeftWall = new Drawing(410, 350, 10, 180, "blue")
+    roomTwoTop = new Drawing(500, 310, 330, 30, "brown")
+    roomTwoLeftWall = new Drawing(410, 350, 10, 180, "brown")
     //room 3
-    roomThreeTop = new Drawing(150, 350, 260, 10, "blue")
+    roomThreeTop = new Drawing(150, 350, 260, 10, "brown")
     roomThreeLavaOne = new Drawing(0, 290, 70, 210, "red")
     //room 4
     roomFourBottLava = new Drawing(0, 100, 200, 190, "red")
     roomFourRightLava = new Drawing(260, 000, 70, 240, "red")
     //room 5
-    roomFiveLeftWall = new Drawing(330, 0, 10, 200, "blue")
+    roomFiveLeftWall = new Drawing(330, 0, 10, 200, "brown")
     roomFiveLavaLeft = new Drawing(340, 150, 200, 50, "red")
 
     //room 5 moving pieces
@@ -373,7 +369,7 @@ function playGame() {
         lava.src = "https://img.freepik.com/free-vector/lava-seamless-textures-game-backgrounds-set_107791-12638.jpg?w=996&t=st=1670462085~exp=1670462685~hmac=2341b197a98512354f617f82ccfe68e804eac5a9e2189f095c986c4e4dddc2fe"
         // wall.src = "./img/Walls.png"
         // firetrap.src = "./img/Fire_Trap.png"
-        IndianaJones.src = "./img/WalkLeft.png"
+        // IndianaJones.src = "./img/WalkLeft.png"
     
         window.requestAnimationFrame(draw);
     }
@@ -388,9 +384,9 @@ function playGame() {
 
         //lava images draw over lava rectangles...no hit detection on JUST images
         // ctx.drawImage(firetrap, 0, 0, 448, 41, 340, 150, 200, 50);
-        ctx.drawImage(wall, 4, 25, 12, 7, 400, 350, 200, 50);
+        // ctx.drawImage(wall, 4, 25, 12, 7, 400, 350, 200, 50);
         
-        ctx.drawImage(IndianaJones, 3, 1, 60, 32, 800, 350, 100, 50);
+        // ctx.drawImage(IndianaJones, 3, 1, 60, 32, 800, 350, 100, 50);
         ctx.drawImage(lava, 0, 0, 160, 309, 340, 150, 200, 50);
         ctx.drawImage(lava, 0, 0, 160, 309, 0, 290, 70, 210);
         ctx.drawImage(lava, 0, 0, 160, 309, 0, 100, 200, 190);
