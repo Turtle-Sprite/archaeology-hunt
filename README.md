@@ -1,5 +1,7 @@
 # archaeology-hunt
 
+# Site Deployed at:
+https://turtle-sprite.github.io/archaeology-hunt/
 
 # Elevator Pitch
 * My game will hide ancient artifacts throughout the page which the player has to find before a volcano erupts. If time runs out before the archaeologist gets to safety, the archaeologist dies and the artifacts are destroyed.
@@ -41,8 +43,6 @@ Wireframe in folder
 * added win/lose page functions
 * focused on styling and CSS
 
-# Site Deployed at:
-https://turtle-sprite.github.io/archaeology-hunt/
 
 # Sources 
 *https://www.youtube.com/@ChrisCourses - collision detection and canvas basics
